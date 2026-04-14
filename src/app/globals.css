@@ -120,11 +120,29 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-inter), sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
+}
+
+/* Letus Brandworks design tokens */
+:root {
+  --font-unbounded: 'Unbounded', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+
+  --color-cream: #faf9f6;
+  --color-dark: #141414;
+  --color-footer: #0f0f0f;
+  --color-orange: #f05a28;
+  --color-charcoal: #1a1a1a;
+  --color-muted: #777777;
+  --color-muted-light: #aaaaaa;
 }
