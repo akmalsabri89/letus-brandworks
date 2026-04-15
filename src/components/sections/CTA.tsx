@@ -1,0 +1,42 @@
+'use client'
+
+import { motion, useReducedMotion } from 'framer-motion'
+import { WhiteConstellation } from '@/components/ui/white-constellation'
+import { CTAForm } from '@/components/sections/CTAForm'
+
+export function CTA() {
+  const shouldReduceMotion = useReducedMotion()
+
+  return (
+    <section className="bg-[#f05a28] py-24 px-5 sm:px-8 lg:px-12 relative overflow-hidden">
+      <WhiteConstellation />
+
+      <motion.div
+        className="relative z-10 max-w-[640px] mx-auto text-center"
+        initial={shouldReduceMotion ? undefined : { opacity: 0, y: 24 }}
+        whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+        transition={
+          shouldReduceMotion
+            ? undefined
+            : { duration: 0.55, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+        }
+        viewport={{ once: true, margin: '-60px' }}
+      >
+        <h2
+          className="text-4xl lg:text-5xl font-[500] text-white leading-tight tracking-tight mb-3"
+          style={{ fontFamily: 'var(--font-unbounded)' }}
+        >
+          Let&apos;s Build Your Brand
+        </h2>
+        <p
+          className="text-white/70 mb-10 max-w-[400px] mx-auto text-base"
+          style={{ fontFamily: 'var(--font-inter)' }}
+        >
+          Most brands blend in. Yours doesn&apos;t have to.
+        </p>
+
+        <CTAForm />
+      </motion.div>
+    </section>
+  )
+}
