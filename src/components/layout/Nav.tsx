@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const navLinks = [
@@ -14,7 +14,20 @@ const navLinks = [
 
 export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [isDark, setIsDark] = useState(false)
   const shouldReduceMotion = useReducedMotion()
+
+  // Go charcoal when a [data-nav-dark] section is in the viewport
+  useEffect(() => {
+    const el = document.querySelector('[data-nav-dark]')
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => setIsDark(entry.isIntersecting),
+      { threshold: 0 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   const entranceVariants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : -12 },
@@ -48,7 +61,11 @@ export function Nav() {
     >
       {/* Pill nav */}
       <nav
-        className="relative flex items-center justify-between px-4 py-2.5 rounded-full bg-white/70 backdrop-blur-xl border border-white/25 shadow-[0_4px_24px_rgba(0,0,0,0.07)]"
+        className={`relative flex items-center justify-between px-4 py-2.5 rounded-full backdrop-blur-xl border shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition-colors duration-300 ${
+          isDark
+            ? 'bg-[#1a1a1a]/90 border-white/10'
+            : 'bg-white/70 border-white/25'
+        }`}
         role="navigation"
         aria-label="Main navigation"
       >
@@ -70,6 +87,7 @@ export function Nav() {
             width={80}
             height={24}
             priority
+            className={`transition-[filter] duration-300 ${isDark ? 'brightness-0 invert' : ''}`}
           />
         </Link>
 
@@ -79,7 +97,11 @@ export function Nav() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="text-[13px] font-medium text-[#1a1a1a]/70 hover:text-[#1a1a1a] transition-colors px-3 py-1.5"
+                className={`text-[13px] font-medium transition-colors px-3 py-1.5 ${
+                  isDark
+                    ? 'text-white/60 hover:text-white'
+                    : 'text-[#1a1a1a]/70 hover:text-[#1a1a1a]'
+                }`}
               >
                 {link.label}
               </Link>
@@ -104,13 +126,19 @@ export function Nav() {
           aria-label="Toggle menu"
         >
           <span
-            className={`block w-5 h-[1.5px] bg-[#1a1a1a] transition-transform duration-200 ${mobileOpen ? 'translate-y-[6.5px] rotate-45' : ''}`}
+            className={`block w-5 h-[1.5px] transition-all duration-200 ${
+              isDark ? 'bg-white' : 'bg-[#1a1a1a]'
+            } ${mobileOpen ? 'translate-y-[6.5px] rotate-45' : ''}`}
           />
           <span
-            className={`block w-5 h-[1.5px] bg-[#1a1a1a] transition-opacity duration-200 ${mobileOpen ? 'opacity-0' : ''}`}
+            className={`block w-5 h-[1.5px] transition-all duration-200 ${
+              isDark ? 'bg-white' : 'bg-[#1a1a1a]'
+            } ${mobileOpen ? 'opacity-0' : ''}`}
           />
           <span
-            className={`block w-5 h-[1.5px] bg-[#1a1a1a] transition-transform duration-200 ${mobileOpen ? '-translate-y-[6.5px] -rotate-45' : ''}`}
+            className={`block w-5 h-[1.5px] transition-all duration-200 ${
+              isDark ? 'bg-white' : 'bg-[#1a1a1a]'
+            } ${mobileOpen ? '-translate-y-[6.5px] -rotate-45' : ''}`}
           />
         </button>
       </nav>
@@ -123,7 +151,11 @@ export function Nav() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="md:hidden mt-2 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.10)] overflow-hidden"
+            className={`md:hidden mt-2 rounded-2xl backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden transition-colors duration-300 ${
+              isDark
+                ? 'bg-[#1a1a1a]/95 border-white/10'
+                : 'bg-white/90 border-white/30'
+            }`}
           >
             <ul className="flex flex-col py-2" role="list">
               {navLinks.map((link) => (
@@ -131,7 +163,11 @@ export function Nav() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block px-5 py-3 text-[14px] font-medium text-[#1a1a1a]/70 hover:text-[#1a1a1a] hover:bg-black/[0.03] transition-colors"
+                    className={`block px-5 py-3 text-[14px] font-medium transition-colors ${
+                      isDark
+                        ? 'text-white/60 hover:text-white hover:bg-white/5'
+                        : 'text-[#1a1a1a]/70 hover:text-[#1a1a1a] hover:bg-black/[0.03]'
+                    }`}
                   >
                     {link.label}
                   </Link>
@@ -141,7 +177,7 @@ export function Nav() {
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center bg-[#1a1a1a] text-white text-[13px] font-semibold px-4 py-2.5 rounded-full hover:bg-[#f05a28] transition-colors duration-300"
+                  className="flex items-center justify-center bg-[#f05a28] text-white text-[13px] font-semibold px-4 py-2.5 rounded-full hover:bg-[#d94e20] transition-colors duration-300"
                 >
                   Contact
                 </Link>
