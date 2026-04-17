@@ -8,7 +8,7 @@ export function CTA() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className="bg-[#f05a28] py-24 px-5 sm:px-8 lg:px-12 relative overflow-hidden">
+    <section className="bg-[#0f0f0f] py-24 px-5 sm:px-8 lg:px-12 relative overflow-hidden">
       <WhiteConstellation />
 
       <motion.div

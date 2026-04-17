@@ -76,7 +76,7 @@ function ServiceRow({ service }: { service: Service }) {
         </h2>
       </div>
       {/* Description + Deliverables */}
-      <div className="lg:col-span-7 lg:border-l lg:border-[#1a1a1a]/6 lg:pl-12">
+      <div className="lg:col-span-7 border-t border-[#1a1a1a]/6 pt-6 mt-2 lg:border-t-0 lg:border-l lg:pt-0 lg:mt-0 lg:pl-12">
         <p className="text-[15px] text-[#555] leading-relaxed mb-6 font-[family-name:var(--font-inter)]">
           {service.description}
         </p>
@@ -84,7 +84,7 @@ function ServiceRow({ service }: { service: Service }) {
           {service.deliverables.map((item) => (
             <span
               key={item}
-              className="text-[11px] font-medium text-[#1a1a1a]/50 border border-[#1a1a1a]/10 px-3 py-1 rounded-full font-[family-name:var(--font-inter)] group-hover:border-[#f05a28]/30 group-hover:text-[#f05a28] transition-colors duration-300"
+              className="text-[11px] font-medium text-[#1a1a1a]/50 border border-[#1a1a1a]/10 px-3 py-1 rounded-sm font-[family-name:var(--font-inter)] group-hover:border-[#f05a28]/30 group-hover:text-[#f05a28] transition-colors duration-300"
             >
               {item}
             </span>

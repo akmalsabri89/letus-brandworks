@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useScroll, useTransform, useMotionValueEvent, motion, AnimatePresence } from 'framer-motion'
 import { BrandConstellation } from '@/components/ui/brand-constellation'
 
@@ -31,20 +31,50 @@ export function ProcessScroll() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [activeStep, setActiveStep] = useState(0)
 
-  // 'end end': progress reaches 1 when container BOTTOM hits viewport BOTTOM.
-  // With a 500vh container and 100vh viewport: effective scroll = 400vh = 4 × 100vh per step.
-  // Sticky releases at exactly progress = 1.0, so bar 4 fills completely before the page moves on.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   })
 
-  // Derive discrete step from scroll progress.
-  // Math.floor(v * 4) changes from 0→1 at exactly v=0.25, 1→2 at v=0.5, etc.
-  // Bar fills also reach 1.0 at those exact thresholds — guaranteed in sync.
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
     setActiveStep(Math.min(3, Math.max(0, Math.floor(v * 4))))
   })
+
+  // Snap to nearest step boundary after user stops scrolling.
+  // Prevents fast-scrollers from missing steps with invisible text.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>
+    const STEP_COUNT = 4
+
+    const handleScroll = () => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        if (!containerRef.current) return
+        const rect = containerRef.current.getBoundingClientRect()
+        const containerTop = rect.top + window.scrollY
+        const containerHeight = containerRef.current.offsetHeight
+        const viewportHeight = window.innerHeight
+        const scrollableDistance = containerHeight - viewportHeight
+        const relativeScroll = window.scrollY - containerTop
+
+        if (relativeScroll < 0 || relativeScroll > scrollableDistance) return
+
+        const progress = relativeScroll / scrollableDistance
+        const nearestStep = Math.round(progress * STEP_COUNT)
+        const targetScroll = containerTop + (nearestStep / STEP_COUNT) * scrollableDistance
+
+        if (Math.abs(window.scrollY - targetScroll) > 8) {
+          window.scrollTo({ top: targetScroll, behavior: 'smooth' })
+        }
+      }, 200)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(timer)
+    }
+  }, [])
 
   // Constellation zoom + rotation
   const zoom = useTransform(
@@ -80,7 +110,7 @@ export function ProcessScroll() {
       </div>
 
       {/* Scroll driver — data-nav-dark placed here so nav only goes ghost once sticky section is active */}
-      <div data-nav-dark ref={containerRef} style={{ height: '500vh' }}>
+      <div data-nav-dark ref={containerRef} style={{ height: '350vh' }}>
         <div className="sticky top-0 h-dvh overflow-hidden bg-[#0f0f0f]">
 
           {/* Constellation zoom/rotate */}
@@ -106,10 +136,10 @@ export function ProcessScroll() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeStep}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span className="text-[11px] font-semibold text-[#f05a28] font-[family-name:var(--font-inter)] block mb-4 tracking-[0.2em]">
                   {steps[activeStep].number}
