@@ -16,7 +16,7 @@ export const caseStudyBySlugQuery = groq`
       ...,
       _type == "imageBlock" => {
         ...,
-        image { asset->{ _id, url }, hotspot, crop }
+        image { asset->{ _id, url, metadata { dimensions { width, height } } }, hotspot, crop }
       }
     }
   }
@@ -39,7 +39,7 @@ export const postBySlugQuery = groq`
       ...,
       _type == "imageBlock" => {
         ...,
-        image { asset->{ _id, url }, hotspot, crop }
+        image { asset->{ _id, url, metadata { dimensions { width, height } } }, hotspot, crop }
       }
     }
   }

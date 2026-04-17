@@ -80,15 +80,18 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             if (!value?.image?.asset) return null
             const src = urlFor(value.image).url()
             const layout = value.layout || 'full'
+            const w = value.image.asset?.metadata?.dimensions?.width || 1200
+            const h = value.image.asset?.metadata?.dimensions?.height || 800
 
             return (
-              <figure className="my-10 w-[80%] mx-auto">
-                <div
-                  className={`relative w-full overflow-hidden rounded-xl ${layout === 'contained' ? 'max-w-[720px] mx-auto' : ''}`}
-                  style={{ aspectRatio: '16/9' }}
-                >
-                  <Image src={src} alt={value.caption || ''} fill className="object-cover" />
-                </div>
+              <figure className={`my-10 w-[80%] mx-auto ${layout === 'contained' ? 'max-w-[720px]' : ''}`}>
+                <Image
+                  src={src}
+                  alt={value.caption || ''}
+                  width={w}
+                  height={h}
+                  className="w-full h-auto rounded-xl"
+                />
                 {value.caption && (
                   <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
                     {value.caption}
@@ -112,11 +115,17 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
                   {value.images.map((item: any) => {
                     if (!item?.image?.asset) return null
                     const src = urlFor(item.image).url()
+                    const w = item.image.asset?.metadata?.dimensions?.width || 1200
+                    const h = item.image.asset?.metadata?.dimensions?.height || 800
                     return (
                       <figure key={item._key} className="m-0">
-                        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl">
-                          <Image src={src} alt={item.caption || ''} fill className="object-cover" />
-                        </div>
+                        <Image
+                          src={src}
+                          alt={item.caption || ''}
+                          width={w}
+                          height={h}
+                          className="w-full h-auto rounded-xl"
+                        />
                         {item.caption && (
                           <figcaption className="text-center text-xs text-[#999] mt-2 font-[family-name:var(--font-inter)]">
                             {item.caption}
