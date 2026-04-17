@@ -82,12 +82,12 @@ export function Nav() {
         {/* Logo */}
         <Link href="/" className="relative flex-shrink-0 flex items-center">
           <Image
-            src="/brand/logo.svg"
+            src={isDark ? '/brand/logo-white.svg' : '/brand/logo.svg'}
             alt="Letus"
             width={80}
             height={24}
             priority
-            className={`transition-[filter] duration-300 ${isDark ? 'brightness-0 invert' : ''}`}
+            className="transition-opacity duration-300"
           />
         </Link>
 
