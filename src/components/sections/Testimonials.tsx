@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import { SectionWrapper } from '@/components/ui/section-wrapper'
-import { scaleIn, stagger } from '@/lib/animations'
 
 interface Testimonial {
   quote: string
@@ -31,72 +30,79 @@ const testimonials: Testimonial[] = [
   },
 ]
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-  const shouldReduceMotion = useReducedMotion()
-
-  const resolvedVariant = shouldReduceMotion
-    ? { hidden: { opacity: 1, scale: 1 }, visible: { opacity: 1, scale: 1 } }
-    : scaleIn
-
+function Attribution({ name, role }: { name: string; role: string }) {
   return (
-    <motion.div
-      variants={resolvedVariant}
-      className="flex flex-col bg-[#faf9f6] rounded-2xl p-8 shadow-sm"
-    >
-      <div
-        className="text-6xl text-[#f05a28] opacity-60 leading-none mb-4 font-[family-name:var(--font-unbounded)]"
-        aria-hidden="true"
-      >
-        &ldquo;
-      </div>
-      <p className="font-[family-name:var(--font-inter)] text-base text-[#1a1a1a]/80 leading-relaxed italic flex-1">
-        {testimonial.quote}
-      </p>
-      <div className="mt-6 pt-6 border-t border-[#1a1a1a]/[0.08]">
-        <p className="font-[family-name:var(--font-unbounded)] font-medium text-sm text-[#1a1a1a]">
-          {testimonial.name}
+    <div className="flex items-center gap-3">
+      <div className="w-5 h-px bg-[#f05a28] flex-shrink-0" aria-hidden="true" />
+      <div>
+        <p className="text-sm font-medium text-[#1a1a1a] font-[family-name:var(--font-inter)]">
+          {name}
         </p>
-        <p className="font-[family-name:var(--font-inter)] text-xs text-[#777777] mt-0.5">
-          {testimonial.role}
+        <p className="text-xs text-[#999] font-[family-name:var(--font-inter)] mt-0.5">
+          {role}
         </p>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 export function Testimonials() {
   const shouldReduceMotion = useReducedMotion()
 
-  const resolvedStagger = shouldReduceMotion
-    ? { hidden: {}, visible: {} }
-    : stagger(0.08)
+  const motionProps = (delay = 0) =>
+    shouldReduceMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: '-60px' },
+          transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay },
+        }
 
   return (
     <SectionWrapper className="bg-white">
-      <div className="text-center mb-16">
-        <h2
-          className="text-4xl lg:text-5xl text-[#1a1a1a] font-[family-name:var(--font-unbounded)] font-medium leading-tight tracking-tight"
-        >
-          Client Stories
-        </h2>
-        <p
-          className="mt-4 text-base text-[#777] font-[family-name:var(--font-inter)] max-w-[440px] mx-auto leading-relaxed"
-        >
-          Hear From Our Clients
-        </p>
-      </div>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        variants={resolvedStagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-60px' }}
+      <h2
+        className="text-4xl lg:text-5xl text-[#1a1a1a] font-[family-name:var(--font-unbounded)] font-medium leading-tight tracking-tight mb-16"
       >
-        {testimonials.map((testimonial) => (
-          <TestimonialCard key={testimonial.name} testimonial={testimonial} />
-        ))}
-      </motion.div>
+        Client Stories
+      </h2>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+        {/* Featured testimonial — editorial, no card */}
+        <motion.div
+          className="lg:col-span-7 border-t border-[#1a1a1a]/10 pt-8 flex flex-col justify-between"
+          {...motionProps(0)}
+        >
+          <p
+            className="text-2xl lg:text-[1.75rem] font-[400] text-[#1a1a1a] leading-relaxed"
+            style={{ fontFamily: 'var(--font-unbounded)' }}
+          >
+            {testimonials[0].quote}
+          </p>
+          <div className="mt-10">
+            <Attribution name={testimonials[0].name} role={testimonials[0].role} />
+          </div>
+        </motion.div>
+
+        {/* Supporting testimonials — stacked cards */}
+        <div className="lg:col-span-5 flex flex-col gap-5">
+          {testimonials.slice(1).map((testimonial, index) => (
+            <motion.div
+              key={testimonial.name}
+              className="bg-[#faf9f6] rounded-xl p-6 flex flex-col gap-5"
+              {...motionProps((index + 1) * 0.1)}
+            >
+              <p className="text-[15px] text-[#1a1a1a]/70 leading-relaxed font-[family-name:var(--font-inter)]">
+                {testimonial.quote}
+              </p>
+              <Attribution name={testimonial.name} role={testimonial.role} />
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
     </SectionWrapper>
   )
 }

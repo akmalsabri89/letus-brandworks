@@ -23,107 +23,104 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   return (
     <>
       <Nav />
-      <main className="min-h-dvh bg-[#0f0f0f]">
+      <main className="min-h-dvh">
 
-        {/* ── Full-viewport hero ───────────────────────── */}
-        <div className="relative w-full h-dvh overflow-hidden">
+        {/* ── Full-viewport hero — clean image, no overlay ── */}
+        <div data-nav-dark className="relative w-full h-dvh overflow-hidden">
           {coverSrc ? (
-            <Image src={coverSrc} alt={project.client} fill className="object-cover" priority />
+            <Image src={coverSrc} alt={project.client} fill className="object-cover" priority sizes="100vw" quality={90} />
           ) : (
             <div className="absolute inset-0 bg-[#1a1a1a]" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/30 to-transparent" />
+        </div>
 
-          {/* Back link */}
-          <div className="absolute top-28 left-5 sm:left-8 lg:left-12 z-10">
+        {/* ── Project info — rounded cream card on dark ─── */}
+        <div className="bg-white px-5 sm:px-8 lg:px-12 pt-20 pb-10">
+          <div className="max-w-[1200px] mx-auto bg-[#faf9f6] rounded-3xl px-8 sm:px-10 lg:px-14 pt-12 pb-14 lg:pt-14 lg:pb-16">
+
+            {/* Back link */}
             <Link
               href="/works"
-              className="text-white/50 hover:text-white text-[12px] font-[family-name:var(--font-inter)] transition-colors"
+              className="text-[12px] text-[#1a1a1a]/40 hover:text-[#1a1a1a] font-[family-name:var(--font-inter)] transition-colors inline-block mb-10"
             >
               ← Works
             </Link>
-          </div>
 
-          {/* Title block — bottom left */}
-          <div className="absolute bottom-0 left-0 right-0 px-5 sm:px-8 lg:px-12 pb-16 max-w-[1200px] mx-auto">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f05a28] font-[family-name:var(--font-inter)] block mb-4">
-              {project.category}
-            </span>
+            {/* Title */}
             <h1
-              className="text-5xl sm:text-6xl lg:text-8xl font-[500] text-white leading-[0.95] tracking-tight max-w-[900px]"
+              className="text-4xl sm:text-5xl lg:text-7xl font-[500] text-[#1a1a1a] leading-[0.95] tracking-tight mb-10"
               style={{ fontFamily: 'var(--font-unbounded)' }}
             >
               {project.title}
             </h1>
-          </div>
-        </div>
 
-        {/* ── Project intro ────────────────────────────── */}
-        <div className="bg-[#0f0f0f] px-5 sm:px-8 lg:px-12 py-20">
-          <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Divider */}
+            <div className="border-t border-[#1a1a1a]/10 mb-10" />
 
-            {/* Specs — left col */}
-            <div className="lg:col-span-3 flex flex-col gap-7">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-1.5 font-[family-name:var(--font-inter)]">Client</p>
-                <p className="text-sm text-white font-medium font-[family-name:var(--font-inter)]">{project.client}</p>
-              </div>
-              {project.year && (
+            {/* Specs + Excerpt */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+
+              {/* Specs — left col */}
+              <div className="lg:col-span-3 flex flex-row flex-wrap lg:flex-col gap-6 lg:gap-8">
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-1.5 font-[family-name:var(--font-inter)]">Year</p>
-                  <p className="text-sm text-white font-medium font-[family-name:var(--font-inter)]">{project.year}</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1a1a]/30 mb-1.5 font-[family-name:var(--font-inter)]">Client</p>
+                  <p className="text-sm text-[#1a1a1a] font-medium font-[family-name:var(--font-inter)]">{project.client}</p>
+                </div>
+                {project.year && (
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1a1a]/30 mb-1.5 font-[family-name:var(--font-inter)]">Year</p>
+                    <p className="text-sm text-[#1a1a1a] font-medium font-[family-name:var(--font-inter)]">{project.year}</p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1a1a]/30 mb-1.5 font-[family-name:var(--font-inter)]">Scope</p>
+                  <p className="text-sm text-[#1a1a1a] font-medium font-[family-name:var(--font-inter)]">{project.category}</p>
+                </div>
+              </div>
+
+              {/* Excerpt — right col, Inter body font */}
+              {project.excerpt && (
+                <div className="lg:col-span-9">
+                  <p className="text-lg lg:text-xl text-[#1a1a1a]/75 leading-relaxed font-[family-name:var(--font-inter)] font-[400] max-w-[680px]">
+                    {project.excerpt}
+                  </p>
                 </div>
               )}
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-1.5 font-[family-name:var(--font-inter)]">Scope</p>
-                <p className="text-sm text-white font-medium font-[family-name:var(--font-inter)]">{project.category}</p>
-              </div>
+
             </div>
 
-            {/* Excerpt — right col */}
-            {project.excerpt && (
-              <div className="lg:col-span-9 lg:border-l lg:border-white/10 lg:pl-12">
-                <p
-                  className="text-2xl lg:text-3xl text-white/90 leading-relaxed font-[400]"
-                  style={{ fontFamily: 'var(--font-unbounded)' }}
-                >
-                  {project.excerpt}
-                </p>
+            {/* Stats — below grid, orange numerals, no separate section */}
+            {project.stats?.length > 0 && (
+              <div className="mt-14 pt-10 border-t border-[#1a1a1a]/10 grid grid-cols-2 lg:grid-cols-4 gap-8">
+                {project.stats.map((stat: any) => (
+                  <div key={stat.label}>
+                    <p
+                      className="text-3xl lg:text-4xl font-[500] text-[#f05a28] leading-none mb-2"
+                      style={{ fontFamily: 'var(--font-unbounded)' }}
+                    >
+                      {stat.value}
+                    </p>
+                    <p className="text-xs text-[#1a1a1a]/45 font-[family-name:var(--font-inter)] uppercase tracking-[0.12em]">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
 
           </div>
         </div>
 
-        {/* ── Stats ────────────────────────────────────── */}
-        {project.stats?.length > 0 && (
-          <div className="bg-[#f05a28] px-5 sm:px-8 lg:px-12 py-16">
-            <div className="max-w-[1200px] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {project.stats.map((stat: any) => (
-                <div key={stat.label}>
-                  <p
-                    className="text-4xl lg:text-6xl font-[500] text-white leading-none mb-2"
-                    style={{ fontFamily: 'var(--font-unbounded)' }}
-                  >
-                    {stat.value}
-                  </p>
-                  <p className="text-sm text-white/70 font-[family-name:var(--font-inter)]">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── Content ──────────────────────────────────── */}
+        {/* ── Content ───────────────────────────────────── */}
         {project.content?.length > 0 && (
-          <div className="bg-[#faf9f6] px-5 sm:px-8 lg:px-12 py-20">
+          <div className="bg-white px-5 sm:px-8 lg:px-12 py-20">
             <div className="w-full">
               <PortableTextRenderer content={project.content} />
             </div>
           </div>
         )}
 
-        {/* ── Footer CTA ───────────────────────────────── */}
+        {/* ── Footer CTA ────────────────────────────────── */}
         <div className="bg-[#0f0f0f] px-5 sm:px-8 lg:px-12 py-20">
           <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div>

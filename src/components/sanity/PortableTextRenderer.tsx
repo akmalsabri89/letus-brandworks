@@ -24,11 +24,55 @@ function VideoEmbed({ url }: { url: string }) {
   )
 }
 
+// Group consecutive imageBlocks with the same grid layout into meta-blocks
+// so they can be rendered as a unified grid container.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function groupGridBlocks(content: any[]): any[] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result: any[] = []
+  let i = 0
+
+  while (i < content.length) {
+    const block = content[i]
+    const layout = block?.layout
+
+    if (block?._type === 'imageBlock' && (layout === 'grid-2' || layout === 'grid-3')) {
+      // Collect all consecutive blocks with the same grid layout
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const group: any[] = [block]
+      let j = i + 1
+      while (
+        j < content.length &&
+        content[j]?._type === 'imageBlock' &&
+        content[j]?.layout === layout
+      ) {
+        group.push(content[j])
+        j++
+      }
+
+      result.push({
+        _type: 'imageGrid',
+        _key: block._key,
+        layout,
+        images: group,
+      })
+      i = j
+    } else {
+      result.push(block)
+      i++
+    }
+  }
+
+  return result
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function PortableTextRenderer({ content }: { content: any[] }) {
+  const processedContent = groupGridBlocks(content)
+
   return (
     <PortableText
-      value={content}
+      value={processedContent}
       components={{
         types: {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,13 +81,12 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             const src = urlFor(value.image).url()
             const layout = value.layout || 'full'
 
-            if (layout === 'grid-2' || layout === 'grid-3') {
-              return null // handled at array level — skip here
-            }
-
             return (
               <figure className="my-10 w-[80%] mx-auto">
-                <div className={`relative w-full overflow-hidden rounded-xl ${layout === 'contained' ? 'max-w-[720px] mx-auto' : ''}`} style={{ aspectRatio: '16/9' }}>
+                <div
+                  className={`relative w-full overflow-hidden rounded-xl ${layout === 'contained' ? 'max-w-[720px] mx-auto' : ''}`}
+                  style={{ aspectRatio: '16/9' }}
+                >
                   <Image src={src} alt={value.caption || ''} fill className="object-cover" />
                 </div>
                 {value.caption && (
@@ -54,6 +97,39 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
               </figure>
             )
           },
+
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          imageGrid: ({ value }: { value: any }) => {
+            const cols = value.layout === 'grid-3' ? 3 : 2
+            const gridClass = cols === 3
+              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3'
+              : 'grid grid-cols-1 sm:grid-cols-2 gap-3'
+
+            return (
+              <div className="my-10 w-[80%] mx-auto">
+                <div className={gridClass}>
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {value.images.map((item: any) => {
+                    if (!item?.image?.asset) return null
+                    const src = urlFor(item.image).url()
+                    return (
+                      <figure key={item._key} className="m-0">
+                        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl">
+                          <Image src={src} alt={item.caption || ''} fill className="object-cover" />
+                        </div>
+                        {item.caption && (
+                          <figcaption className="text-center text-xs text-[#999] mt-2 font-[family-name:var(--font-inter)]">
+                            {item.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          },
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           videoBlock: ({ value }: { value: any }) => {
             if (!value?.url) return null
@@ -63,6 +139,7 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
               </div>
             )
           },
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           sectionLabel: ({ value }: { value: any }) => {
             const label = value.customLabel || value.label
@@ -76,6 +153,7 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             )
           },
         },
+
         block: {
           normal: ({ children }) => (
             <p className="max-w-[800px] mx-auto text-base text-[#555] leading-relaxed mb-5 font-[family-name:var(--font-inter)]">{children}</p>

@@ -139,9 +139,6 @@ export function SelectedWork() {
           <h2 className="font-[family-name:var(--font-unbounded)] text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight">
             Featured Works
           </h2>
-          <p className="mt-4 text-base text-[#777] font-[family-name:var(--font-inter)] max-w-[440px] leading-relaxed">
-            Work That Speaks For Itself
-          </p>
         </div>
 
         {/* Row 1 — large left, smaller right */}
