@@ -62,7 +62,7 @@ export function ProcessScroll() {
   const barFills = [bar0, bar1, bar2, bar3]
 
   return (
-    <div data-nav-dark className="bg-[#0f0f0f]">
+    <div className="bg-[#0f0f0f]">
 
       {/* Section heading — scrolls away before sticky locks */}
       <div className="px-5 sm:px-8 lg:px-12 pt-20 pb-10">
@@ -79,8 +79,8 @@ export function ProcessScroll() {
         </div>
       </div>
 
-      {/* Scroll driver — 500vh → 125vh per step */}
-      <div ref={containerRef} style={{ height: '500vh' }}>
+      {/* Scroll driver — data-nav-dark placed here so nav only goes ghost once sticky section is active */}
+      <div data-nav-dark ref={containerRef} style={{ height: '500vh' }}>
         <div className="sticky top-0 h-dvh overflow-hidden bg-[#0f0f0f]">
 
           {/* Constellation zoom/rotate */}
