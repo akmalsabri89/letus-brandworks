@@ -26,7 +26,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       <main className="min-h-dvh">
 
         {/* ── Full-viewport hero — clean image, no overlay ── */}
-        <div data-nav-dark className="relative w-full h-dvh overflow-hidden">
+        <div data-nav-ghost className="relative w-full h-dvh overflow-hidden">
           {coverSrc ? (
             <Image src={coverSrc} alt={project.client} fill className="object-cover" priority sizes="100vw" quality={90} />
           ) : (

@@ -15,18 +15,35 @@ const navLinks = [
 export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [isGhost, setIsGhost] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
   // Go charcoal when a [data-nav-dark] section is in the viewport
   useEffect(() => {
-    const el = document.querySelector('[data-nav-dark]')
-    if (!el) return
-    const io = new IntersectionObserver(
-      ([entry]) => setIsDark(entry.isIntersecting),
-      { threshold: 0 }
-    )
-    io.observe(el)
-    return () => io.disconnect()
+    const darkEl = document.querySelector('[data-nav-dark]')
+    const ghostEl = document.querySelector('[data-nav-ghost]')
+
+    const observers: IntersectionObserver[] = []
+
+    if (darkEl) {
+      const io = new IntersectionObserver(
+        ([entry]) => setIsDark(entry.isIntersecting),
+        { threshold: 0 }
+      )
+      io.observe(darkEl)
+      observers.push(io)
+    }
+
+    if (ghostEl) {
+      const io = new IntersectionObserver(
+        ([entry]) => setIsGhost(entry.isIntersecting),
+        { threshold: 0 }
+      )
+      io.observe(ghostEl)
+      observers.push(io)
+    }
+
+    return () => observers.forEach((o) => o.disconnect())
   }, [])
 
   const entranceVariants = {
@@ -61,9 +78,11 @@ export function Nav() {
     >
       {/* Pill nav */}
       <nav
-        className={`relative flex items-center justify-between px-4 py-2.5 rounded-full backdrop-blur-xl border shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition-colors duration-300 ${
+        className={`relative flex items-center justify-between px-4 py-2.5 rounded-full backdrop-blur-xl border shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition-all duration-500 ${
           isDark
             ? 'bg-[#1a1a1a]/90 border-white/10'
+            : isGhost
+            ? 'bg-white/10 border-white/10 shadow-none'
             : 'bg-white/70 border-white/25'
         }`}
         role="navigation"
@@ -82,7 +101,7 @@ export function Nav() {
         {/* Logo */}
         <Link href="/" className="relative flex-shrink-0 flex items-center">
           <Image
-            src={isDark ? '/brand/logo-white.svg' : '/brand/logo.svg'}
+            src={isDark || isGhost ? '/brand/logo-white.svg' : '/brand/logo.svg'}
             alt="Letus"
             width={80}
             height={24}
@@ -98,8 +117,8 @@ export function Nav() {
               <Link
                 href={link.href}
                 className={`text-[13px] font-medium transition-colors px-3 py-1.5 ${
-                  isDark
-                    ? 'text-white/60 hover:text-white'
+                  isDark || isGhost
+                    ? 'text-white/70 hover:text-white'
                     : 'text-[#1a1a1a]/70 hover:text-[#1a1a1a]'
                 }`}
               >
@@ -127,17 +146,17 @@ export function Nav() {
         >
           <span
             className={`block w-5 h-[1.5px] transition-all duration-200 ${
-              isDark ? 'bg-white' : 'bg-[#1a1a1a]'
+              isDark || isGhost ? 'bg-white' : 'bg-[#1a1a1a]'
             } ${mobileOpen ? 'translate-y-[6.5px] rotate-45' : ''}`}
           />
           <span
             className={`block w-5 h-[1.5px] transition-all duration-200 ${
-              isDark ? 'bg-white' : 'bg-[#1a1a1a]'
+              isDark || isGhost ? 'bg-white' : 'bg-[#1a1a1a]'
             } ${mobileOpen ? 'opacity-0' : ''}`}
           />
           <span
             className={`block w-5 h-[1.5px] transition-all duration-200 ${
-              isDark ? 'bg-white' : 'bg-[#1a1a1a]'
+              isDark || isGhost ? 'bg-white' : 'bg-[#1a1a1a]'
             } ${mobileOpen ? '-translate-y-[6.5px] -rotate-45' : ''}`}
           />
         </button>
@@ -152,7 +171,7 @@ export function Nav() {
             animate="visible"
             exit="exit"
             className={`md:hidden mt-2 rounded-2xl backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden transition-colors duration-300 ${
-              isDark
+              isDark || isGhost
                 ? 'bg-[#1a1a1a]/95 border-white/10'
                 : 'bg-white/90 border-white/30'
             }`}
@@ -164,7 +183,7 @@ export function Nav() {
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className={`block px-5 py-3 text-[14px] font-medium transition-colors ${
-                      isDark
+                      isDark || isGhost
                         ? 'text-white/60 hover:text-white hover:bg-white/5'
                         : 'text-[#1a1a1a]/70 hover:text-[#1a1a1a] hover:bg-black/[0.03]'
                     }`}
