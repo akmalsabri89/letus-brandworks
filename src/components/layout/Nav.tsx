@@ -15,8 +15,10 @@ const navLinks = [
 export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  // darkHero: page has a full-bleed dark image at top (use white text while ghost)
+  // darkHero: page top has a dark image — white text while unscrolled
   const [darkHero, setDarkHero] = useState(false)
+  // overDark: a dark mid-page section [data-nav-dark] is in the viewport
+  const [overDark, setOverDark] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
@@ -25,26 +27,40 @@ export function Nav() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
 
-    // Dark-hero pages opt in with [data-nav-ghost] — drives white text while unscrolled
+    const observers: IntersectionObserver[] = []
+
+    // [data-nav-ghost] — dark hero at top (white text while unscrolled)
     const ghostEl = document.querySelector('[data-nav-ghost]')
-    let io: IntersectionObserver | null = null
     if (ghostEl) {
-      io = new IntersectionObserver(
+      const io = new IntersectionObserver(
         ([entry]) => setDarkHero(entry.isIntersecting),
         { threshold: 0 }
       )
       io.observe(ghostEl)
+      observers.push(io)
+    }
+
+    // [data-nav-dark] — dark sections mid-page (ghost + white text while in view)
+    const darkEl = document.querySelector('[data-nav-dark]')
+    if (darkEl) {
+      const io = new IntersectionObserver(
+        ([entry]) => setOverDark(entry.isIntersecting),
+        { threshold: 0 }
+      )
+      io.observe(darkEl)
+      observers.push(io)
     }
 
     return () => {
       window.removeEventListener('scroll', onScroll)
-      io?.disconnect()
+      observers.forEach((o) => o.disconnect())
     }
   }, [])
 
-  // Derived states — ghost = unscrolled, white = unscrolled over dark image
-  const isGhost = !scrolled
-  const isWhite = isGhost && darkHero
+  // Ghost = unscrolled OR scrolled into a dark section
+  const isGhost = !scrolled || overDark
+  // White text = ghost over any dark surface
+  const isWhite = (!scrolled && darkHero) || overDark
 
   const entranceVariants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : -12 },
