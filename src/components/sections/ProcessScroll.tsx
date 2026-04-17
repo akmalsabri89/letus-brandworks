@@ -91,15 +91,15 @@ export function ProcessScroll() {
             <BrandConstellation />
           </motion.div>
 
-          {/* Vignette */}
+          {/* Vignette — kept light so constellation remains the hero */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, rgba(15,15,15,0.55) 100%)',
+                'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, rgba(15,15,15,0.25) 100%)',
             }}
           />
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#0f0f0f]/40 via-transparent to-[#0f0f0f]/50" />
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#0f0f0f]/20 via-transparent to-[#0f0f0f]/25" />
 
           {/* Step text — driven by discrete step state, AnimatePresence for clean transitions */}
           <div className="absolute top-[22%] left-[10%] lg:left-[18%] max-w-[750px] z-10 pointer-events-none">

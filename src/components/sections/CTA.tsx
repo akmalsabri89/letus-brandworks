@@ -26,13 +26,13 @@ export function CTA() {
           className="text-4xl lg:text-5xl font-[500] text-white leading-tight tracking-tight mb-3"
           style={{ fontFamily: 'var(--font-unbounded)' }}
         >
-          Let&apos;s Build Your Brand
+          Ready to Ignite?
         </h2>
         <p
           className="text-white/70 mb-10 max-w-[400px] mx-auto text-base"
           style={{ fontFamily: 'var(--font-inter)' }}
         >
-          Most brands blend in. Yours doesn&apos;t have to.
+          You&apos;ve seen how we work. Now let&apos;s start with your story.
         </p>
 
         <CTAForm />
