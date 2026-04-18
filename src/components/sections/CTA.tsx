@@ -23,7 +23,7 @@ export function CTA() {
         viewport={{ once: true, margin: '-60px' }}
       >
         <h2
-          className="text-4xl lg:text-5xl font-[500] text-white leading-tight tracking-tight mb-3"
+          className="text-4xl lg:text-5xl font-[500] text-[#f05a28] leading-tight tracking-tight mb-3"
           style={{ fontFamily: 'var(--font-unbounded)' }}
         >
           Ready to Ignite?
@@ -35,7 +35,7 @@ export function CTA() {
           You&apos;ve seen how we work. Now let&apos;s start with your story.
         </p>
 
-        <CTAForm />
+        <CTAForm dark />
       </motion.div>
     </section>
   )

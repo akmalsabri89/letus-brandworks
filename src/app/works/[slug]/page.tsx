@@ -18,7 +18,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const project: any = await client.fetch(caseStudyBySlugQuery, { slug })
   if (!project) notFound()
 
-  const coverSrc = project.coverImage ? urlFor(project.coverImage).width(2000).url() : null
+  const coverSrc = project.coverImage?.asset?.url ?? null
 
   return (
     <>
@@ -28,7 +28,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         {/* ── Full-viewport hero — clean image, no overlay ── */}
         <div data-nav-ghost className="relative w-full h-dvh overflow-hidden">
           {coverSrc ? (
-            <Image src={coverSrc} alt={project.client} fill className="object-cover" priority sizes="100vw" quality={90} />
+            <Image src={coverSrc} alt={project.client} fill className="object-cover" priority sizes="100vw" unoptimized />
           ) : (
             <div className="absolute inset-0 bg-[#1a1a1a]" />
           )}

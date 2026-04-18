@@ -117,8 +117,8 @@ export function Nav() {
           <Image
             src={isWhite ? '/brand/logo-white.svg' : '/brand/logo.svg'}
             alt="Letus"
-            width={80}
-            height={24}
+            width={96}
+            height={29}
             priority
             className="transition-opacity duration-300"
           />
@@ -147,7 +147,7 @@ export function Nav() {
           href="/contact"
           className="hidden md:inline-flex items-center bg-[#f05a28] text-white text-[12px] font-semibold px-4 py-2 rounded-full hover:bg-[#d94e20] transition-colors duration-300 relative"
         >
-          Contact
+          Contact →
         </Link>
 
         {/* Mobile hamburger */}
@@ -212,7 +212,7 @@ export function Nav() {
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center bg-[#f05a28] text-white text-[13px] font-semibold px-4 py-2.5 rounded-full hover:bg-[#d94e20] transition-colors duration-300"
                 >
-                  Contact
+                  Contact →
                 </Link>
               </li>
             </ul>

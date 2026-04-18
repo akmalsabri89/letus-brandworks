@@ -44,7 +44,7 @@ export default function ContactPage() {
           </div>
 
           {/* Form */}
-          <CTAForm cardBg="#ffffff" />
+          <CTAForm />
 
           {/* Contact methods */}
           <div className="mt-12 pt-10 border-t border-[#1a1a1a]/8">

@@ -1,16 +1,9 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import { Suspense } from 'react'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { client } from '@/sanity/lib/client'
 import { postsQuery } from '@/sanity/lib/queries'
-import { urlFor } from '@/sanity/lib/image'
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-MY', {
-    year: 'numeric', month: 'long', day: 'numeric',
-  })
-}
+import { BlogGrid } from '@/components/blogs/BlogGrid'
 
 export default async function BlogsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,7 +15,7 @@ export default async function BlogsPage() {
       <main className="min-h-dvh bg-white pt-36 pb-24 px-5 sm:px-8 lg:px-12">
         <div className="max-w-[1200px] mx-auto">
 
-          <div className="mb-16">
+          <div className="mb-12">
             <h1
               className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
               style={{ fontFamily: 'var(--font-unbounded)' }}
@@ -41,49 +34,9 @@ export default async function BlogsPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => {
-                const src = post.coverImage ? urlFor(post.coverImage).width(720).url() : null
-                return (
-                  <Link key={post._id} href={`/blogs/${post.slug.current}`} className="group block">
-                    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[#f0ede8] mb-4">
-                      {src ? (
-                        <Image
-                          src={src}
-                          alt={post.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-[#f0ede8]" />
-                      )}
-                    </div>
-                    <div className="px-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        {post.category && (
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#f05a28] font-[family-name:var(--font-inter)]">
-                            {post.category}
-                          </span>
-                        )}
-                        {post.publishedAt && (
-                          <span className="text-[11px] text-[#bbb] font-[family-name:var(--font-inter)]">
-                            {formatDate(post.publishedAt)}
-                          </span>
-                        )}
-                      </div>
-                      <h2 className="font-[family-name:var(--font-unbounded)] text-[15px] font-[500] text-[#1a1a1a] leading-snug mb-2 group-hover:text-[#f05a28] transition-colors duration-200">
-                        {post.title}
-                      </h2>
-                      {post.excerpt && (
-                        <p className="text-[13px] text-[#999] leading-relaxed font-[family-name:var(--font-inter)] line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                      )}
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
+            <Suspense>
+              <BlogGrid posts={posts} />
+            </Suspense>
           )}
 
         </div>

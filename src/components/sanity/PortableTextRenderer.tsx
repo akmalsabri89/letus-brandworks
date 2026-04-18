@@ -170,9 +170,14 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
           h2: ({ children }) => (
             <h2 className="max-w-[800px] mx-auto text-2xl lg:text-3xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mt-12 mb-4 font-[family-name:var(--font-unbounded)]">{children}</h2>
           ),
-          h3: ({ children }) => (
-            <h3 className="max-w-[800px] mx-auto text-xl font-[500] text-[#1a1a1a] mt-8 mb-3 font-[family-name:var(--font-unbounded)]">{children}</h3>
-          ),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          h3: ({ children, value }: { children?: React.ReactNode; value?: any }) => {
+            const text = (value?.children || []).map((c: { text?: string }) => c.text || '').join('')
+            const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+            return (
+              <h3 id={id || undefined} className="max-w-[800px] mx-auto text-xl font-[500] text-[#1a1a1a] mt-8 mb-3 font-[family-name:var(--font-unbounded)]">{children}</h3>
+            )
+          },
           blockquote: ({ children }) => (
             <blockquote className="max-w-[800px] mx-auto border-l-2 border-[#f05a28] pl-6 my-8 italic text-lg text-[#1a1a1a]/70 font-[family-name:var(--font-inter)]">
               {children}
