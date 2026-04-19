@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { Logo } from '@/components/ui/Logo'
 
 const serviceLinks = [
   'Brand Strategy',
@@ -17,12 +17,7 @@ export function Footer() {
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Col 1 — Brand */}
           <div>
-            <Image
-              src="/brand/logo-white.svg"
-              alt="Letus Brandworks"
-              width={90}
-              height={28}
-            />
+            <Logo white width={90} height={28} />
             <p
               className="text-sm text-white/40 mt-4 leading-relaxed max-w-[200px]"
               style={{ fontFamily: 'var(--font-inter)' }}

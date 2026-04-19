@@ -1,9 +1,9 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { Logo } from '@/components/ui/Logo'
 
 const navLinks = [
   { label: 'Works', href: '/works' },
@@ -114,15 +114,7 @@ export function Nav() {
 
         {/* Logo */}
         <Link href="/" className="relative flex-shrink-0 flex items-center">
-          <Image
-            key={isWhite ? 'white' : 'color'}
-            src={isWhite ? '/brand/logo-white.svg' : '/brand/logo.svg'}
-            alt="Letus"
-            width={96}
-            height={29}
-            priority
-            className="transition-opacity duration-300"
-          />
+          <Logo white={isWhite} width={96} height={29} className="transition-opacity duration-300" />
         </Link>
 
         {/* Desktop links */}

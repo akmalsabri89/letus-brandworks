@@ -60,8 +60,8 @@ export function ProcessScroll() {
         if (relativeScroll < 0 || relativeScroll > scrollableDistance) return
 
         const progress = relativeScroll / scrollableDistance
-        const nearestStep = Math.round(progress * STEP_COUNT)
-        const targetScroll = containerTop + (nearestStep / STEP_COUNT) * scrollableDistance
+        const nearestStep = Math.min(STEP_COUNT - 1, Math.round(progress * STEP_COUNT))
+        const targetScroll = containerTop + ((nearestStep + 0.5) / STEP_COUNT) * scrollableDistance
 
         if (Math.abs(window.scrollY - targetScroll) > 8) {
           window.scrollTo({ top: targetScroll, behavior: 'smooth' })
