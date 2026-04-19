@@ -53,7 +53,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/works"
-                className="border border-[#1a1a1a]/20 text-[#1a1a1a] text-[13px] font-medium px-6 py-3 rounded-full hover:border-[#1a1a1a]/40 transition-colors duration-200"
+                className="bg-white border border-[#1a1a1a]/15 text-[#1a1a1a] text-[13px] font-medium px-6 py-3 rounded-full hover:border-[#1a1a1a]/30 hover:bg-white transition-colors duration-200"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 See Our Work

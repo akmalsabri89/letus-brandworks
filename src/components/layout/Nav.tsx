@@ -115,6 +115,7 @@ export function Nav() {
         {/* Logo */}
         <Link href="/" className="relative flex-shrink-0 flex items-center">
           <Image
+            key={isWhite ? 'white' : 'color'}
             src={isWhite ? '/brand/logo-white.svg' : '/brand/logo.svg'}
             alt="Letus"
             width={96}
