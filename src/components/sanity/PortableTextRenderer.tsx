@@ -3,6 +3,7 @@
 import { PortableText } from 'next-sanity'
 import { urlFor } from '@/sanity/lib/image'
 import Image from 'next/image'
+import { AnimatedSection } from '@/components/ui/animated-section'
 
 function VideoEmbed({ url }: { url: string }) {
   const isYoutube = url.includes('youtube.com') || url.includes('youtu.be')
@@ -84,20 +85,22 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             const h = value.image.asset?.metadata?.dimensions?.height || 800
 
             return (
-              <figure className={`my-10 w-[80%] mx-auto ${layout === 'contained' ? 'max-w-[720px]' : ''}`}>
-                <Image
-                  src={src}
-                  alt={value.caption || ''}
-                  width={w}
-                  height={h}
-                  className="w-full h-auto rounded-xl"
-                />
-                {value.caption && (
-                  <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
-                    {value.caption}
-                  </figcaption>
-                )}
-              </figure>
+              <AnimatedSection>
+                <figure className={`my-10 w-[80%] mx-auto ${layout === 'contained' ? 'max-w-[720px]' : ''}`}>
+                  <Image
+                    src={src}
+                    alt={value.caption || ''}
+                    width={w}
+                    height={h}
+                    className="w-full h-auto rounded-xl"
+                  />
+                  {value.caption && (
+                    <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
+                      {value.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              </AnimatedSection>
             )
           },
 
@@ -109,8 +112,9 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
               : 'grid grid-cols-1 sm:grid-cols-2 gap-3'
 
             return (
-              <div className="my-10 w-[80%] mx-auto">
-                <div className={gridClass}>
+              <AnimatedSection>
+                <div className="my-10 w-[80%] mx-auto">
+                  <div className={gridClass}>
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {value.images.map((item: any) => {
                     if (!item?.image?.asset) return null
@@ -134,8 +138,9 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
                       </figure>
                     )
                   })}
+                  </div>
                 </div>
-              </div>
+              </AnimatedSection>
             )
           },
 
@@ -146,29 +151,33 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
 
             if (fileUrl) {
               return (
-                <figure className="w-[80%] mx-auto my-10">
-                  <video
-                    src={fileUrl}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full rounded-xl"
-                  />
-                  {value.caption && (
-                    <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
-                      {value.caption}
-                    </figcaption>
-                  )}
-                </figure>
+                <AnimatedSection>
+                  <figure className="w-[80%] mx-auto my-10">
+                    <video
+                      src={fileUrl}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full rounded-xl"
+                    />
+                    {value.caption && (
+                      <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
+                        {value.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                </AnimatedSection>
               )
             }
 
             if (embedUrl) {
               return (
-                <div className="w-[80%] mx-auto">
-                  <VideoEmbed url={embedUrl} />
-                </div>
+                <AnimatedSection>
+                  <div className="w-[80%] mx-auto">
+                    <VideoEmbed url={embedUrl} />
+                  </div>
+                </AnimatedSection>
               )
             }
 
