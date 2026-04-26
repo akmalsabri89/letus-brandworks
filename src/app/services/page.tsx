@@ -112,6 +112,8 @@ export default function ServicesPage() {
               >
                 What We Do
               </h1>
+            </AnimatedSection>
+            <AnimatedSection delay={0.08}>
               <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
                 Your brand shouldn&apos;t apologise for being itself. We build the strategy, identity, and presence to make sure it never has to.
               </p>
@@ -130,8 +132,8 @@ export default function ServicesPage() {
                 Brand
               </span>
             </div>
-            {brandServices.map((service) => (
-              <AnimatedSection key={service.number}>
+            {brandServices.map((service, i) => (
+              <AnimatedSection key={service.number} delay={i * 0.07}>
                 <ServiceRow service={service} />
               </AnimatedSection>
             ))}
@@ -143,8 +145,8 @@ export default function ServicesPage() {
                 Growth
               </span>
             </div>
-            {growthServices.map((service) => (
-              <AnimatedSection key={service.number}>
+            {growthServices.map((service, i) => (
+              <AnimatedSection key={service.number} delay={i * 0.07}>
                 <ServiceRow service={service} />
               </AnimatedSection>
             ))}

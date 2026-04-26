@@ -29,25 +29,27 @@ export default function ContactPage() {
         <div className="max-w-[640px] mx-auto">
 
           {/* Header */}
-          <AnimatedSection>
-            <div className="text-center mb-12">
+          <div className="text-center mb-12">
+            <AnimatedSection>
               <h1
                 className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
                 style={{ fontFamily: 'var(--font-unbounded)' }}
               >
                 Start a Project
               </h1>
+            </AnimatedSection>
+            <AnimatedSection delay={0.08}>
               <p
                 className="text-base text-[#777] max-w-[400px] mx-auto leading-relaxed"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 Tell us about your brand and what you&apos;re trying to build. We&apos;ll take it from there.
               </p>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          </div>
 
           {/* Form */}
-          <AnimatedSection>
+          <AnimatedSection delay={0.12}>
             <CTAForm />
           </AnimatedSection>
 

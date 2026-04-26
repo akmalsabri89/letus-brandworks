@@ -23,7 +23,7 @@ function WorksGrid({ projects }: { projects: any[] }) {
     <div className="columns-1 md:columns-2 gap-5 space-y-5">
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       {projects.filter((p: any) => p?.slug?.current).map((project: any, i: number) => (
-        <AnimatedSection key={project._id}>
+        <AnimatedSection key={project._id} delay={Math.min(i, 3) * 0.07}>
           <WorkCard
             project={project}
             aspect={ASPECT_RATIOS[i % ASPECT_RATIOS.length]}
@@ -43,19 +43,21 @@ export default async function WorksPage() {
       <main className="min-h-dvh bg-white pt-36 pb-24 px-5 sm:px-8 lg:px-12">
         <div className="max-w-[1200px] mx-auto">
 
-          <AnimatedSection>
-            <div className="mb-16">
+          <div className="mb-16">
+            <AnimatedSection>
               <h1
                 className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
                 style={{ fontFamily: 'var(--font-unbounded)' }}
               >
                 Our Work
               </h1>
+            </AnimatedSection>
+            <AnimatedSection delay={0.08}>
               <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
                 A selection of brands we have built, shaped, and launched into the world.
               </p>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          </div>
 
           <WorksGrid projects={projects} />
 
