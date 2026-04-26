@@ -42,10 +42,16 @@ export const blockContent = defineType({
       title: 'Video',
       type: 'object',
       fields: [
-        { name: 'url', title: 'Video URL (YouTube / Vimeo)', type: 'url' },
+        { name: 'videoFile', title: 'Upload Video', type: 'file', options: { accept: 'video/*' } },
+        { name: 'url', title: 'Or embed URL (YouTube / Vimeo)', type: 'url' },
         { name: 'caption', title: 'Caption', type: 'string' },
       ],
-      preview: { select: { title: 'url' } },
+      preview: {
+        select: { title: 'caption', subtitle: 'url' },
+        prepare({ title, subtitle }: { title?: string; subtitle?: string }) {
+          return { title: title || 'Video', subtitle: subtitle || 'Uploaded file' }
+        },
+      },
     }),
     defineArrayMember({
       name: 'sectionLabel',

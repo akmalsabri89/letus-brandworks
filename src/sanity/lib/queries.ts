@@ -18,6 +18,10 @@ export const caseStudyBySlugQuery = groq`
       _type == "imageBlock" => {
         ...,
         image { asset->{ _id, url, metadata { dimensions { width, height } } }, hotspot, crop }
+      },
+      _type == "videoBlock" => {
+        ...,
+        videoFile { asset->{ url } }
       }
     }
   }

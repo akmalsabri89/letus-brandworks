@@ -141,12 +141,38 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           videoBlock: ({ value }: { value: any }) => {
-            if (!value?.url) return null
-            return (
-              <div className="w-[80%] mx-auto">
-                <VideoEmbed url={value.url} />
-              </div>
-            )
+            const fileUrl = value?.videoFile?.asset?.url
+            const embedUrl = value?.url
+
+            if (fileUrl) {
+              return (
+                <figure className="w-[80%] mx-auto my-10">
+                  <video
+                    src={fileUrl}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full rounded-xl"
+                  />
+                  {value.caption && (
+                    <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
+                      {value.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              )
+            }
+
+            if (embedUrl) {
+              return (
+                <div className="w-[80%] mx-auto">
+                  <VideoEmbed url={embedUrl} />
+                </div>
+              )
+            }
+
+            return null
           },
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
