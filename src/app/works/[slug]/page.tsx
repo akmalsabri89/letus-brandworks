@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { client } from '@/sanity/lib/client'
-import { caseStudyBySlugQuery, caseStudiesQuery } from '@/sanity/lib/queries'
+import { caseStudyBySlugQuery, caseStudiesQuery, featuredCaseStudiesQuery } from '@/sanity/lib/queries'
+import { WorkCard } from '@/components/works/WorkCard'
 import { urlFor } from '@/sanity/lib/image'
 import { PortableTextRenderer } from '@/components/sanity/PortableTextRenderer'
 
@@ -15,7 +16,10 @@ export async function generateStaticParams() {
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const project: any = await client.fetch(caseStudyBySlugQuery, { slug })
+  const [project, featuredProjects] = await Promise.all([
+    client.fetch(caseStudyBySlugQuery, { slug }),
+    client.fetch(featuredCaseStudiesQuery, { slug }),
+  ])
   if (!project) notFound()
 
   const coverSrc = project.coverImage?.asset?.url ?? null
@@ -120,6 +124,28 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </div>
         )}
 
+        {/* ── Featured Projects ─────────────────────────── */}
+        {featuredProjects.length > 0 && (
+          <div className="bg-white px-5 sm:px-8 lg:px-12 pt-4 pb-20">
+            <div className="max-w-[1200px] mx-auto">
+              <div className="mb-10">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1a1a]/30 mb-3 font-[family-name:var(--font-inter)]">More Work</p>
+                <h2
+                  className="text-2xl lg:text-3xl font-[500] text-[#1a1a1a] leading-tight"
+                  style={{ fontFamily: 'var(--font-unbounded)' }}
+                >
+                  Featured Projects
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {featuredProjects.map((p: any) => (
+                  <WorkCard key={p._id} project={p} aspect="aspect-[4/3]" />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ── Footer CTA ────────────────────────────────── */}
         <div className="bg-[#0f0f0f] px-5 sm:px-8 lg:px-12 py-20">
           <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-8">
@@ -132,18 +158,12 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 Ready to build your brand?
               </p>
             </div>
-            <div className="flex items-center gap-4 flex-shrink-0">
+            <div className="flex-shrink-0">
               <Link
                 href="/contact"
                 className="bg-[#f05a28] text-white font-semibold text-[13px] px-7 py-3.5 rounded-full hover:bg-[#d94e20] transition-colors duration-200 font-[family-name:var(--font-inter)]"
               >
                 Let&apos;s Talk →
-              </Link>
-              <Link
-                href="/works"
-                className="text-white/50 hover:text-white text-[13px] font-[family-name:var(--font-inter)] transition-colors"
-              >
-                ← All Works
               </Link>
             </div>
           </div>

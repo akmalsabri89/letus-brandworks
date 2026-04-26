@@ -38,6 +38,14 @@ export const relatedCaseStudiesQuery = groq`
   }
 `
 
+export const featuredCaseStudiesQuery = groq`
+  *[_type == "caseStudy" && featured == true && slug.current != $slug] | order(order asc) [0..3] {
+    _id, title, slug, client, category,
+    coverImage { asset->{ _id, url }, hotspot, crop },
+    "galleryImages": content[_type == "imageBlock" && (layout == "full" || layout == "contained")].image { asset->{ _id, url }, hotspot, crop }
+  }
+`
+
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     _id, title, slug, excerpt, category, tags, publishedAt,
