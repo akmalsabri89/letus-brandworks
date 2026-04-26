@@ -2,6 +2,7 @@ import { CTAForm } from '@/components/sections/CTAForm'
 import { CONTACT } from '@/config/contact'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
+import { AnimatedSection } from '@/components/ui/animated-section'
 
 function MailIcon() {
   return (
@@ -28,25 +29,30 @@ export default function ContactPage() {
         <div className="max-w-[640px] mx-auto">
 
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1
-              className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
-              style={{ fontFamily: 'var(--font-unbounded)' }}
-            >
-              Start a Project
-            </h1>
-            <p
-              className="text-base text-[#777] max-w-[400px] mx-auto leading-relaxed"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              Tell us about your brand and what you&apos;re trying to build. We&apos;ll take it from there.
-            </p>
-          </div>
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <h1
+                className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
+                style={{ fontFamily: 'var(--font-unbounded)' }}
+              >
+                Start a Project
+              </h1>
+              <p
+                className="text-base text-[#777] max-w-[400px] mx-auto leading-relaxed"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                Tell us about your brand and what you&apos;re trying to build. We&apos;ll take it from there.
+              </p>
+            </div>
+          </AnimatedSection>
 
           {/* Form */}
-          <CTAForm />
+          <AnimatedSection>
+            <CTAForm />
+          </AnimatedSection>
 
           {/* Contact methods */}
+          <AnimatedSection>
           <div className="mt-12 pt-10 border-t border-[#1a1a1a]/8">
             <p
               className="text-center text-[11px] font-semibold uppercase tracking-[0.15em] text-[#bbb] mb-6"
@@ -102,6 +108,7 @@ export default function ContactPage() {
               </div>
             )}
           </div>
+          </AnimatedSection>
 
         </div>
       </main>

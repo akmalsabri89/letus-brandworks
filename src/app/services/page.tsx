@@ -3,6 +3,7 @@ import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { CTA } from '@/components/sections/CTA'
 import { ProcessScroll } from '@/components/sections/ProcessScroll'
+import { AnimatedSection } from '@/components/ui/animated-section'
 
 const brandServices = [
   {
@@ -104,15 +105,17 @@ export default function ServicesPage() {
         {/* Hero */}
         <div className="pt-36 pb-20 px-5 sm:px-8 lg:px-12 border-b border-[#1a1a1a]/6">
           <div className="max-w-[1200px] mx-auto">
-            <h1
-              className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
-              style={{ fontFamily: 'var(--font-unbounded)' }}
-            >
-              What We Do
-            </h1>
-            <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
-              Your brand shouldn&apos;t apologise for being itself. We build the strategy, identity, and presence to make sure it never has to.
-            </p>
+            <AnimatedSection>
+              <h1
+                className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
+                style={{ fontFamily: 'var(--font-unbounded)' }}
+              >
+                What We Do
+              </h1>
+              <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
+                Your brand shouldn&apos;t apologise for being itself. We build the strategy, identity, and presence to make sure it never has to.
+              </p>
+            </AnimatedSection>
           </div>
         </div>
 
@@ -128,7 +131,9 @@ export default function ServicesPage() {
               </span>
             </div>
             {brandServices.map((service) => (
-              <ServiceRow key={service.number} service={service} />
+              <AnimatedSection key={service.number}>
+                <ServiceRow service={service} />
+              </AnimatedSection>
             ))}
 
             {/* Growth group */}
@@ -139,7 +144,9 @@ export default function ServicesPage() {
               </span>
             </div>
             {growthServices.map((service) => (
-              <ServiceRow key={service.number} service={service} />
+              <AnimatedSection key={service.number}>
+                <ServiceRow service={service} />
+              </AnimatedSection>
             ))}
 
           </div>
