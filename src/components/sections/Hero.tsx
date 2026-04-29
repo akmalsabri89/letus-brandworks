@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 import { useReducedMotion } from 'framer-motion'
-import { AnimatedGroup } from '@/components/ui/animated-section'
-import { AnimatedSection } from '@/components/ui/animated-section'
+import { AnimatedGroup, AnimatedSection } from '@/components/ui/animated-section'
 import { BrandConstellation } from '@/components/ui/brand-constellation'
 
 export function Hero() {

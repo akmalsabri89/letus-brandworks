@@ -3,7 +3,7 @@ import { Hero } from '@/components/sections/Hero'
 import { LogoStrip } from '@/components/sections/LogoStrip'
 import { SelectedWork } from '@/components/sections/SelectedWork'
 import { Services } from '@/components/sections/Services'
-import { Process } from '@/components/sections/Process'
+import { ProcessScroll } from '@/components/sections/ProcessScroll'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { CTA } from '@/components/sections/CTA'
 import { Footer } from '@/components/layout/Footer'
@@ -17,7 +17,7 @@ export default function Home() {
         <LogoStrip />
         <SelectedWork />
         <Services />
-        <Process />
+        <ProcessScroll />
         <Testimonials />
         <CTA />
       </main>

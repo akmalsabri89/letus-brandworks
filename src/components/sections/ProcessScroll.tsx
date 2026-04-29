@@ -66,7 +66,7 @@ export function ProcessScroll() {
         if (Math.abs(window.scrollY - targetScroll) > 8) {
           window.scrollTo({ top: targetScroll, behavior: 'smooth' })
         }
-      }, 200)
+      }, 500)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
