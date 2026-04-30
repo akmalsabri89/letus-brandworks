@@ -1,8 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
-import { motion, useAnimation, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import {
+  motion,
+  useAnimation,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
 import { EruptionGlow } from '@/components/ui/eruption-glow'
 import { EnergyStreaks } from '@/components/ui/energy-streaks'
 import { easing } from '@/lib/tokens'
@@ -11,6 +17,20 @@ export function HeroEruption() {
   const glowControls = useAnimation()
   const textControls = useAnimation()
   const shouldReduce = useReducedMotion()
+
+  const heroRef = useRef<HTMLElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+
+  // Layers rise upward (negative y) as user scrolls down
+  // Each layer at different speed for depth
+  const glowY    = useTransform(scrollYProgress, [0, 1], ['0%', '-35%'])
+  const streakY  = useTransform(scrollYProgress, [0, 1], ['0%', '-70%'])
+  const smokeY   = useTransform(scrollYProgress, [0, 1], ['0%', '-20%'])
+  const glowFade = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   useEffect(() => {
     const awaken = async () => {
@@ -57,14 +77,45 @@ export function HeroEruption() {
 
   return (
     <section
+      ref={heroRef}
       data-nav-ghost
       className="relative min-h-dvh flex flex-col justify-center overflow-hidden bg-[#0a0a0a]"
     >
-      {/* Parallax layers — static for now, scroll wired in Task 4 */}
-      <div className="absolute inset-0">
-        <EruptionGlow intensity={1} />
-        <EnergyStreaks />
-      </div>
+      {/* Parallax background layers */}
+      {shouldReduce ? (
+        // No parallax for reduced-motion users
+        <div className="absolute inset-0">
+          <EruptionGlow intensity={1} />
+          <EnergyStreaks />
+        </div>
+      ) : (
+        <div className="absolute inset-0">
+          {/* Atmospheric haze — slowest */}
+          <motion.div
+            className="absolute inset-0 eruption-layer"
+            style={{ y: smokeY }}
+          >
+            <EruptionGlow intensity={0.6} />
+          </motion.div>
+
+          {/* Main glow — medium speed */}
+          <motion.div
+            className="absolute inset-0 eruption-layer"
+            style={{ y: glowY, opacity: glowFade }}
+            animate={glowControls}
+          >
+            <EruptionGlow intensity={1} />
+          </motion.div>
+
+          {/* Energy streaks — fastest, most aggressive */}
+          <motion.div
+            className="absolute inset-0 eruption-layer"
+            style={{ y: streakY }}
+          >
+            <EnergyStreaks />
+          </motion.div>
+        </div>
+      )}
 
       {/* Text content */}
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-12 pt-32 pb-24">
@@ -139,14 +190,7 @@ export function HeroEruption() {
         </motion.div>
       </div>
 
-      {/* Glow fade-in wrapper */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={glowControls}
-      >
-        {/* Additional soft overlay that fades with the glow */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a] opacity-60" />
-      </motion.div>
+
     </section>
   )
 }
