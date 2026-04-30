@@ -4,7 +4,7 @@ import './globals.css'
 
 const unbounded = Unbounded({
   subsets: ['latin'],
-  weight: ['500', '700'],
+  weight: ['400', '500', '600', '700', '800', '900'],
   variable: '--font-unbounded',
   display: 'swap',
 })
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${unbounded.variable} ${inter.variable}`}>
-      <body className="antialiased bg-[#faf9f6] text-[#1a1a1a]">
+      <body className="antialiased bg-[#0a0a0a] text-white">
         {children}
       </body>
     </html>

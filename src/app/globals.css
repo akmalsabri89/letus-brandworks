@@ -146,3 +146,25 @@
   --color-muted: #777777;
   --color-muted-light: #aaaaaa;
 }
+
+/* Eruption design system */
+:root {
+  --color-void: #0a0a0a;
+  --color-charcoal: #141414;
+  --color-surface: #1e1e1e;
+  --color-orange: #f05a28;
+  --color-ember: #8b2200;
+
+  /* Fluid type scale — clamp(min, preferred, max) */
+  --text-hero: clamp(48px, 8vw, 96px);
+  --text-section: clamp(32px, 4vw, 52px);
+  --text-label: 11px;
+  --letter-hero: -0.04em;
+  --letter-section: -0.02em;
+}
+
+/* GPU hints for known parallax layers */
+.eruption-layer {
+  will-change: transform;
+  transform: translateZ(0);
+}
