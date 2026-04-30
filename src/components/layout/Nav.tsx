@@ -96,8 +96,8 @@ export function Nav() {
       <nav
         className={`relative flex items-center justify-between px-4 py-2.5 rounded-full backdrop-blur-xl border transition-all duration-500 ${
           isGhost
-            ? 'bg-white/10 border-white/10 shadow-none'
-            : 'bg-white/70 border-white/25 shadow-[0_4px_24px_rgba(0,0,0,0.10)]'
+            ? 'bg-white/5 border-white/8 shadow-none'
+            : 'bg-[#0a0a0a]/85 border-white/10 shadow-[0_4px_32px_rgba(0,0,0,0.5)]'
         }`}
         role="navigation"
         aria-label="Main navigation"
@@ -123,11 +123,7 @@ export function Nav() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className={`text-[13px] font-medium transition-colors px-3 py-1.5 ${
-                  isWhite
-                    ? 'text-white/70 hover:text-white'
-                    : 'text-[#1a1a1a]/70 hover:text-[#1a1a1a]'
-                }`}
+                className="text-[13px] font-medium transition-colors px-3 py-1.5 text-white/60 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -177,11 +173,7 @@ export function Nav() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className={`md:hidden mt-2 rounded-2xl backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden transition-colors duration-300 ${
-              isWhite
-                ? 'bg-[#1a1a1a]/95 border-white/10'
-                : 'bg-white/90 border-white/30'
-            }`}
+            className="md:hidden mt-2 rounded-2xl bg-[#141414]/95 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)] overflow-hidden"
           >
             <ul className="flex flex-col py-2" role="list">
               {navLinks.map((link) => (
@@ -189,11 +181,7 @@ export function Nav() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`block px-5 py-3 text-[14px] font-medium transition-colors ${
-                      isWhite
-                        ? 'text-white/60 hover:text-white hover:bg-white/5'
-                        : 'text-[#1a1a1a]/70 hover:text-[#1a1a1a] hover:bg-black/[0.03]'
-                    }`}
+                    className="block px-5 py-3 text-[14px] font-medium transition-colors text-white/60 hover:text-white hover:bg-white/5"
                   >
                     {link.label}
                   </Link>
