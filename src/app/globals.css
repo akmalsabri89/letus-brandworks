@@ -133,6 +133,7 @@
   }
 }
 
+/* Legacy tokens — superseded by Eruption design system below. Remove at go-live. */
 /* Letus Brandworks design tokens */
 :root {
   --font-unbounded: 'Unbounded', sans-serif;
@@ -167,4 +168,11 @@
 .eruption-layer {
   will-change: transform;
   transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eruption-layer {
+    will-change: auto;
+    transform: none;
+  }
 }

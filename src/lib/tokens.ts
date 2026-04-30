@@ -12,8 +12,8 @@ export const colors = {
   // Text
   white: '#ffffff',
   muted: '#777777',
-  mutedDim: '#444444',
-  mutedDimmer: '#333333',
+  mutedDim: '#444444',    // decorative only — non-text (dividers, disabled). Fails AA for text.
+  mutedDimmer: '#333333', // decorative only — non-text (structural). Fails AA for text.
 
   // Footer
   footer: '#0f0f0f',
