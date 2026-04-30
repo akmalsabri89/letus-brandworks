@@ -35,10 +35,10 @@ function Attribution({ name, role }: { name: string; role: string }) {
     <div className="flex items-center gap-3">
       <div className="w-5 h-px bg-[#f05a28] flex-shrink-0" aria-hidden="true" />
       <div>
-        <p className="text-sm font-medium text-[#1a1a1a] font-[family-name:var(--font-inter)]">
+        <p className="text-sm font-medium text-white font-[family-name:var(--font-inter)]">
           {name}
         </p>
-        <p className="text-xs text-[#999] font-[family-name:var(--font-inter)] mt-0.5">
+        <p className="text-xs text-[#777] font-[family-name:var(--font-inter)] mt-0.5">
           {role}
         </p>
       </div>
@@ -60,10 +60,10 @@ export function Testimonials() {
         }
 
   return (
-    <SectionWrapper className="bg-white">
+    <SectionWrapper className="bg-[#141414]">
 
       <h2
-        className="text-4xl lg:text-5xl text-[#1a1a1a] font-[family-name:var(--font-unbounded)] font-medium leading-tight tracking-tight mb-16"
+        className="text-4xl lg:text-5xl text-white font-[family-name:var(--font-unbounded)] font-medium leading-tight tracking-tight mb-16"
       >
         Client Stories
       </h2>
@@ -72,11 +72,11 @@ export function Testimonials() {
 
         {/* Featured testimonial — editorial, no card */}
         <motion.div
-          className="lg:col-span-7 border-t border-[#1a1a1a]/10 pt-8 flex flex-col justify-between"
+          className="lg:col-span-7 border-t border-white/10 pt-8 flex flex-col justify-between"
           {...motionProps(0)}
         >
           <p
-            className="text-2xl lg:text-[1.75rem] font-[400] text-[#1a1a1a] leading-relaxed"
+            className="text-2xl lg:text-[1.75rem] font-[400] text-white leading-relaxed"
             style={{ fontFamily: 'var(--font-unbounded)' }}
           >
             {testimonials[0].quote}
@@ -91,10 +91,10 @@ export function Testimonials() {
           {testimonials.slice(1).map((testimonial, index) => (
             <motion.div
               key={testimonial.name}
-              className="bg-[#faf9f6] rounded-xl p-6 flex flex-col gap-5"
+              className="bg-[#1e1e1e] rounded-xl p-6 flex flex-col gap-5"
               {...motionProps((index + 1) * 0.1)}
             >
-              <p className="text-[15px] text-[#1a1a1a]/70 leading-relaxed font-[family-name:var(--font-inter)]">
+              <p className="text-[15px] text-white/60 leading-relaxed font-[family-name:var(--font-inter)]">
                 {testimonial.quote}
               </p>
               <Attribution name={testimonial.name} role={testimonial.role} />
