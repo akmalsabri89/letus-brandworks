@@ -1,5 +1,5 @@
 import { Nav } from '@/components/layout/Nav'
-import { Hero } from '@/components/sections/Hero'
+import { HeroEruption } from '@/components/sections/HeroEruption'
 import { LogoStrip } from '@/components/sections/LogoStrip'
 import { SelectedWork } from '@/components/sections/SelectedWork'
 import { Services } from '@/components/sections/Services'
@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <Nav />
       <main>
-        <Hero />
+        <HeroEruption />
         <LogoStrip />
         <SelectedWork />
         <Services />
