@@ -1,67 +1,58 @@
-import Image from 'next/image'
+'use client'
 
-interface LogoItem {
-  src: string
-  alt: string
-}
+import { useReducedMotion } from 'framer-motion'
 
-const logos: LogoItem[] = [
-  { src: '/logos/ainqa.svg', alt: 'Ainqa' },
-  { src: '/logos/clean-traces.svg', alt: 'Clean Traces' },
-  { src: '/logos/eutex.svg', alt: 'Eutex' },
-  { src: '/logos/geliga.svg', alt: 'Geliga' },
-  { src: '/logos/gullate.svg', alt: 'Gullate' },
-  { src: '/logos/perintis.svg', alt: 'Perintis' },
-  { src: '/logos/vkl-media.svg', alt: 'VKL Media' },
+// Replace with actual client SVG logos when available
+const CLIENTS = [
+  'Client One', 'Client Two', 'Client Three',
+  'Client Four', 'Client Five', 'Client Six',
 ]
 
-const LogoItem = ({ logo, id }: { logo: LogoItem; id: string }) => (
-  <span key={id} className="flex-shrink-0 px-14 flex items-center" role="listitem">
-    <Image
-      src={logo.src}
-      alt={logo.alt}
-      width={120}
-      height={40}
-      className="opacity-40 brightness-0"
-      style={{ objectFit: 'contain', width: 'auto', height: '30px' }}
-    />
-  </span>
-)
-
 export function LogoStrip() {
-  return (
-    <section className="bg-gradient-to-b from-[#faf9f6] to-white py-16 w-full overflow-hidden" aria-label="Client logos">
-      <style>{`
-        @keyframes marquee {
-          from { transform: translateX(0) }
-          to   { transform: translateX(-50%) }
-        }
-        .animate-marquee {
-          animation: marquee 28s linear infinite;
-          display: flex;
-          width: max-content;
-          will-change: transform;
-        }
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .animate-marquee {
-            animation: none;
-          }
-        }
-      `}</style>
+  const shouldReduce = useReducedMotion()
+  const items = [...CLIENTS, ...CLIENTS] // duplicate for seamless loop
 
-      <div className="overflow-hidden">
-        <div className="animate-marquee" role="list">
-          {logos.map((logo) => (
-            <LogoItem key={`a-${logo.alt}`} id={`a-${logo.alt}`} logo={logo} />
-          ))}
-          {logos.map((logo) => (
-            <LogoItem key={`b-${logo.alt}`} id={`b-${logo.alt}`} logo={logo} />
-          ))}
+  return (
+    <section className="bg-[#0f0f0f] border-t border-b border-[#1a1a1a] py-5 overflow-hidden">
+      <div className="flex items-center gap-6">
+        <p
+          className="text-[10px] tracking-[3px] uppercase text-[#333] whitespace-nowrap pl-8 flex-shrink-0"
+          style={{ fontFamily: 'var(--font-inter)' }}
+        >
+          Trusted by
+        </p>
+
+        <div className="overflow-hidden flex-1 relative">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[#0f0f0f] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#0f0f0f] to-transparent z-10 pointer-events-none" />
+
+          <div
+            className="flex gap-12 items-center"
+            style={{
+              animation: shouldReduce ? 'none' : 'marquee 30s linear infinite',
+              width: 'max-content',
+            }}
+          >
+            {items.map((name, i) => (
+              <span
+                key={i}
+                className="text-[13px] font-medium text-white/25 whitespace-nowrap"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                {name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   )
 }
