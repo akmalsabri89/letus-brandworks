@@ -1,161 +1,131 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
-import { useScroll, useTransform, useMotionValueEvent, motion } from 'framer-motion'
-import { BrandConstellation } from '@/components/ui/brand-constellation'
+import { useRef } from 'react'
+import Image from 'next/image'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { SectionNumber } from '@/components/SectionNumber'
 
-const steps = [
+const STEPS = [
   {
-    number: '01',
-    label: 'Discover',
-    detail: 'We get into your business — your goals, market, and what sets you apart.',
+    num: '01',
+    title: 'Listen',
+    body: 'We sit in your meetings before we draw a line. Workshops, interviews, document archaeology. The brief gets shorter, sharper, harder to argue with.',
+    visual: 'https://images.unsplash.com/photo-1681949103006-70066fb25dfe?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
   },
   {
-    number: '02',
-    label: 'Strategise',
-    detail: 'We map the positioning and creative direction before a single pixel is placed.',
+    num: '02',
+    title: 'Locate',
+    body: 'We map the white space competitors are too polite to claim. Then we test it against your audience until the position only one brand can credibly hold. Yours.',
+    visual: 'https://images.unsplash.com/photo-1568359415314-7ddb3bd0c828?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
   },
   {
-    number: '03',
-    label: 'Create',
-    detail: 'Design and build with precision, presenting work that earns its place.',
+    num: '03',
+    title: 'Erupt',
+    body: 'Now the noise. Identity, voice, system. We design the version of your brand that walks into the room and stops the conversation.',
+    visual: '/process/erupt.png',
   },
   {
-    number: '04',
-    label: 'Launch',
-    detail: 'We hand over a brand ready for the world — and stay close as you grow.',
+    num: '04',
+    title: 'Land',
+    body: "Guidelines, training, launch. We hand-off so cleanly your team forgets we ever ran the show. Then we stay on speed-dial for the next eruption.",
+    visual: 'https://images.unsplash.com/photo-1563461660947-507ef49e9c47?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
   },
 ]
 
 export function ProcessScroll() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [activeStep, setActiveStep] = useState(0)
-
+  const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: sectionRef,
     offset: ['start start', 'end end'],
   })
 
-  // Vertical scroll drives horizontal panel movement
-  // 4 panels × 100vw — translate from 0 to -300vw as user scrolls through
-  const x = useTransform(scrollYProgress, [0, 1], ['0vw', '-300vw'])
+  return (
+    <section
+      ref={sectionRef}
+      id="home-process"
+      className="relative bg-foreground text-background"
+      style={{ minHeight: `${100 + STEPS.length * 70}vh` }}
+    >
+      <SectionNumber n={4} className="!text-background/[0.06]" />
 
-  useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    // 4 steps, 3 transitions — snap to nearest third
-    setActiveStep(Math.min(3, Math.max(0, Math.round(v * 3))))
+      <div className="mx-auto grid max-w-[1600px] grid-cols-12 gap-6 px-6 md:px-10">
+
+        {/* Sticky left */}
+        <div className="col-span-12 md:col-span-5">
+          <div className="sticky top-32 py-24">
+            <p className="overline opacity-60">[ Our Process ]</p>
+            <h2 className="display-lg mt-6">
+              Four moves.<br />
+              <em className="italic accent-orange">One eruption.</em>
+            </h2>
+            <p className="mt-8 max-w-md text-base leading-relaxed opacity-70">
+              We don&apos;t do logo sprints. We run a method tuned to make
+              brands credible, distinctive, and impossible to scroll past.
+            </p>
+
+            {/* Scroll progress bar */}
+            <div className="mt-10 h-[3px] w-full bg-background/15">
+              <motion.div
+                style={{ scaleX: scrollYProgress, transformOrigin: '0% 50%' }}
+                className="h-full bg-eruption"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Scrolling right column */}
+        <div className="col-span-12 md:col-span-7">
+          <div className="flex flex-col gap-24 py-24 md:gap-48 md:py-32">
+            {STEPS.map((step) => (
+              <ProcessCard key={step.num} step={step} />
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+function ProcessCard({ step }: { step: typeof STEPS[number] }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
   })
-
-  // Snap to nearest panel after scroll settles
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>
-
-    const handleScroll = () => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        if (!containerRef.current) return
-        const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY
-        const scrollableDistance = containerRef.current.offsetHeight - window.innerHeight
-        const relativeScroll = window.scrollY - containerTop
-
-        if (relativeScroll < 0 || relativeScroll > scrollableDistance) return
-
-        const progress = relativeScroll / scrollableDistance
-        // 4 panels → snap points at 0, 1/3, 2/3, 1
-        const nearestStep = Math.min(3, Math.max(0, Math.round(progress * 3)))
-        const targetScroll = containerTop + (nearestStep / 3) * scrollableDistance
-
-        if (Math.abs(window.scrollY - targetScroll) > 10) {
-          window.scrollTo({ top: targetScroll, behavior: 'smooth' })
-        }
-      }, 400)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      clearTimeout(timer)
-    }
-  }, [])
+  const y = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3])
 
   return (
-    <div className="bg-[#0f0f0f]">
-      {/* Section heading — scrolls away before sticky section locks */}
-      <div className="px-5 sm:px-8 lg:px-12 pt-20 pb-10">
-        <div className="max-w-[1200px] mx-auto">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f05a28] font-[family-name:var(--font-inter)] block mb-3">
-            How We Work
-          </span>
-          <h2
-            className="text-3xl lg:text-4xl font-[500] text-white leading-tight tracking-tight"
-            style={{ fontFamily: 'var(--font-unbounded)' }}
-          >
-            From Brief to Brand
-          </h2>
-        </div>
+    <motion.div
+      ref={ref}
+      style={{ opacity }}
+      className="grid grid-cols-12 gap-4"
+    >
+      <div className="col-span-2">
+        <span className="overline opacity-60">{step.num}</span>
       </div>
-
-      {/* Scroll driver — 350vh gives ~87.5vh per step */}
-      <div ref={containerRef} data-nav-dark style={{ height: '350vh' }}>
-        <div className="sticky top-0 h-dvh overflow-hidden bg-[#0f0f0f]">
-
-          {/* Constellation — static, no scale transform, stays crisp */}
-          <div className="absolute inset-0 pointer-events-none">
-            <BrandConstellation />
-          </div>
-
-          {/* Vignettes */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, rgba(15,15,15,0.25) 100%)',
-            }}
-          />
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#0f0f0f]/20 via-transparent to-[#0f0f0f]/25" />
-
-          {/* Horizontal sliding strip — GPU composited */}
-          <motion.div
-            style={{ x, willChange: 'transform' }}
-            className="absolute inset-y-0 left-0 flex"
-          >
-            {steps.map((step) => (
-              <div
-                key={step.number}
-                className="relative h-full flex-shrink-0"
-                style={{ width: '100vw' }}
-              >
-                <div className="absolute top-[22%] left-[10%] lg:left-[18%] max-w-[750px]">
-                  <span className="text-[11px] font-semibold text-[#f05a28] font-[family-name:var(--font-inter)] block mb-4 tracking-[0.2em]">
-                    {step.number}
-                  </span>
-                  <h3
-                    className="text-5xl lg:text-7xl font-[500] text-white leading-[0.95] tracking-tight mb-6"
-                    style={{ fontFamily: 'var(--font-unbounded)' }}
-                  >
-                    {step.label}
-                  </h3>
-                  <p className="text-base text-white/50 max-w-[400px] leading-relaxed font-[family-name:var(--font-inter)]">
-                    {step.detail}
-                  </p>
-                </div>
-              </div>
-            ))}
+      <div className="col-span-10">
+        <div className="relative aspect-[5/4] overflow-hidden rounded-sm">
+          <motion.div style={{ y }} className="absolute inset-0 h-[120%]">
+            <Image
+              src={step.visual}
+              alt={step.title}
+              fill
+              className="object-cover"
+              sizes="(min-width: 768px) 50vw, 90vw"
+              quality={95}
+            />
           </motion.div>
-
-          {/* Step indicators — pill expands on active */}
-          <div className="absolute bottom-10 right-5 sm:right-8 lg:right-12 flex items-center gap-1.5 z-20">
-            {steps.map((_, i) => (
-              <div
-                key={i}
-                className={`rounded-full bg-white transition-all duration-300 ${
-                  i === activeStep ? 'w-5 h-[3px] opacity-75' : 'w-[3px] h-[3px] opacity-20'
-                }`}
-              />
-            ))}
-          </div>
-
+          <div className="absolute inset-0 bg-foreground/20" />
         </div>
+        <h3 className="display-lg mt-6">
+          {step.title}<span className="accent-orange">.</span>
+        </h3>
+        <p className="mt-4 max-w-xl text-base leading-relaxed opacity-80">
+          {step.body}
+        </p>
       </div>
-    </div>
+    </motion.div>
   )
 }

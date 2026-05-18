@@ -42,7 +42,7 @@ export async function submitLead(data: LeadData): Promise<{ success: boolean; er
       from: 'Letus Leads <leads@mail.letusbrandworks.com>',
       to: process.env.CONTACT_EMAIL!,
       replyTo: data.email,
-      subject: `New Lead — ${data.business || data.name}`,
+      subject: `New Lead: ${data.business || data.name}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
           <div style="background: #f05a28; padding: 32px; border-radius: 12px 12px 0 0;">

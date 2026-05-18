@@ -1,262 +1,130 @@
-'use client'
-
+import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Nav } from '@/components/layout/Nav'
-import { Footer } from '@/components/layout/Footer'
+import { SectionNumber } from '@/components/SectionNumber'
+import { Parallax } from '@/components/Parallax'
+import { FigCaption } from '@/components/FigCaption'
 
-const STATS = [
-  { value: '15+', label: 'Years in the industry' },
-  { value: '30+', label: 'Brand projects' },
-  { value: '100+', label: 'Clients served' },
-  { value: '1', label: 'Year as Letus' },
-]
-
-const VALUES = [
-  {
-    name: 'Artisanal',
-    description:
-      'Every brand we touch is treated as a unique craft. No templates, no shortcuts. We obsess over the details most agencies overlook because that is where the real difference lives.',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f05a28" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'Bold',
-    description:
-      'Safe is forgettable. We push ideas until they ignite. Our work is designed to stop people mid-scroll, earn second glances, and start conversations that matter.',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f05a28" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'Clarity',
-    description:
-      'Strategy without clarity is just noise. We cut through the confusion and build brands with a singular, undeniable point of view. One your audience feels from the first touchpoint.',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f05a28" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-    ),
-  },
-]
-
-function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
-  const shouldReduceMotion = useReducedMotion()
-  return (
-    <motion.div
-      initial={shouldReduceMotion ? undefined : { opacity: 0, y: 24 }}
-      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-        delay,
-      }}
-    >
-      {children}
-    </motion.div>
-  )
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Letus is a boutique Brand Design Studio. We work with founders and businesses ready to lead their category.',
 }
+
+const CONVICTIONS = [
+  {
+    num: '01',
+    title: 'Substance over polish',
+    body: 'Polish is the easy part. The harder work is clarity, coherence, and a brand that still makes sense at scale.',
+  },
+  {
+    num: '02',
+    title: 'Strategy before surface',
+    body: 'We design the thinking before we design the look. Identity follows positioning, never the other way around.',
+  },
+  {
+    num: '03',
+    title: 'Depth over throughput',
+    body: 'Every brand we take on deserves our full attention. We’d rather go deep than spread thin. Our clients get a partner.',
+  },
+  {
+    num: '04',
+    title: 'System by design',
+    body: 'Every brand gets its own logic. The way it looks, the way it sounds, the way it holds together across every touchpoint.',
+  },
+]
 
 export default function AboutPage() {
   return (
     <>
-      <Nav />
-      <main className="bg-[#faf9f6]">
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <SectionNumber n={4} position="right" />
+        <div className="relative mx-auto max-w-[1600px] px-6 pt-40 pb-24 md:px-10 md:pb-32">
+          <p className="overline text-muted-foreground mb-6">[ About ]</p>
 
-        {/* ── Hero + Story ─────────────────────────────── */}
-        <section className="pt-36 pb-20 px-5 sm:px-8 lg:px-12">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <h1 className="display-xl max-w-[14ch]">
+            A studio named after
+            <br />
+            <em className="italic accent-orange">an eruption.</em>
+          </h1>
 
-              {/* Left — copy */}
-              <div>
-                <FadeUp>
-                  <h1
-                    className="text-4xl sm:text-5xl lg:text-6xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-6"
-                    style={{ fontFamily: 'var(--font-unbounded)' }}
-                  >
-                    About Us
-                  </h1>
-                </FadeUp>
-                <FadeUp delay={0.08}>
-                  <p
-                    className="text-base text-[#555] leading-relaxed mb-5"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    Letus is derived from the Malay word for eruption. A burst of soul in the constellation of branding. Because the brands that change industries never asked for permission to be noticed.
-                  </p>
-                </FadeUp>
-                <FadeUp delay={0.12}>
-                  <p
-                    className="text-base text-[#555] leading-relaxed"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    We are a boutique brand strategy and identity studio based in Kedah, Malaysia. Working with founders and business owners who are ready to stop blending in and start owning their category.
-                  </p>
-                </FadeUp>
-              </div>
+          <div className="mt-20 grid grid-cols-12 gap-6 md:gap-12 items-start">
+            {/* Body */}
+            <div className="col-span-12 md:col-span-7">
+              <p className="overline text-muted-foreground mb-6">[ The word ]</p>
+              <p className="text-base text-foreground/80 leading-relaxed mb-5 md:text-lg">
+                Letus is the Malay word for eruption.
+              </p>
+              <p className="text-base text-muted-foreground leading-relaxed mb-5 md:text-lg">
+                We named the studio after the moment a brand stops blending in.
+                The deck closes. The room goes quiet. Someone says, <em className="italic">okay, this is them.</em>
+              </p>
+              <p className="text-base text-muted-foreground leading-relaxed md:text-lg">
+                That moment is engineered. It comes from strategy before identity, depth before
+                throughput, and a system designed to hold under scrutiny.
+              </p>
+            </div>
 
-              {/* Right — photo */}
-              <FadeUp delay={0.1}>
-                <div className="relative rounded-2xl overflow-hidden aspect-[4/5] w-full max-w-[440px] mx-auto lg:mx-0 lg:ml-auto">
+            {/* Hero image */}
+            <div className="col-span-12 md:col-span-5">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
+                <Parallax intensity={50}>
                   <Image
-                    src="/about/akmal.jpg"
-                    alt="Akmal — Founder of Letus Brandworks"
+                    src="/covers/geliga.png"
+                    alt="Geliga, brand strategy and identity work by Letus"
                     fill
-                    className="object-cover object-top"
+                    className="object-cover"
+                    sizes="(min-width: 768px) 40vw, 100vw"
+                    quality={95}
                     priority
                   />
-                </div>
-              </FadeUp>
-
-            </div>
-          </div>
-        </section>
-
-        {/* ── Stats ────────────────────────────────────── */}
-        <section className="py-16 px-5 sm:px-8 lg:px-12 border-y border-[#1a1a1a]/8">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {STATS.map((stat, i) => (
-                <FadeUp key={stat.label} delay={i * 0.06}>
-                  <div className="text-center lg:text-left">
-                    <p
-                      className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-none mb-2"
-                      style={{ fontFamily: 'var(--font-unbounded)' }}
-                    >
-                      {stat.value}
-                    </p>
-                    <p
-                      className="text-sm text-[#999]"
-                      style={{ fontFamily: 'var(--font-inter)' }}
-                    >
-                      {stat.label}
-                    </p>
-                  </div>
-                </FadeUp>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── About Me ─────────────────────────────────── */}
-        <section className="py-24 px-5 sm:px-8 lg:px-12">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-              <FadeUp>
-                <h2
-                  className="text-3xl lg:text-4xl font-[500] text-[#1a1a1a] leading-tight tracking-tight"
-                  style={{ fontFamily: 'var(--font-unbounded)' }}
-                >
-                  The Person Behind the Brand
-                </h2>
-              </FadeUp>
-
-              <div className="space-y-4">
-                <FadeUp delay={0.06}>
-                  <p className="text-base text-[#555] leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Akmal is a Brand Strategist and Creative Director with over 15 years across the creative industry. His background spans graphic design, digital arts, production, and performance art, giving him a rare perspective on how brands communicate, move, and leave a lasting impression.
-                  </p>
-                </FadeUp>
-                <FadeUp delay={0.1}>
-                  <p className="text-base text-[#555] leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-                    That breadth is what makes Letus different. Where most brand studios think in visuals, Akmal thinks in experiences. Every identity he builds is rooted in strategy, shaped by craft, and designed to perform.
-                  </p>
-                </FadeUp>
-                <FadeUp delay={0.14}>
-                  <p className="text-base text-[#555] leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Letus collaborates with a curated network of specialists when projects call for it. The vision stays sharp. The quality stays consistent.
-                  </p>
-                </FadeUp>
+                </Parallax>
               </div>
-
+              <FigCaption n={1}>Geliga / Brand Strategy &amp; Identity, 2025.</FigCaption>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── Values ───────────────────────────────────── */}
-        <section className="py-24 px-5 sm:px-8 lg:px-12 bg-white">
-          <div className="max-w-[1200px] mx-auto">
+      {/* Manifesto strip */}
+      <section className="bg-foreground py-24 text-background md:py-32">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-10">
+          <p className="overline opacity-60 mb-10">[ Manifesto ]</p>
+          <p className="display-lg max-w-4xl">
+            Most brands are <em className="italic accent-orange">asking permission</em> to be noticed.
+            <br />
+            We help them stop.
+          </p>
+        </div>
+      </section>
 
-            <FadeUp>
-              <div className="mb-14">
-                <h2
-                  className="text-3xl lg:text-4xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
-                  style={{ fontFamily: 'var(--font-unbounded)' }}
-                >
-                  What We Stand For
-                </h2>
-                <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
-                  Three principles that shape every project we take on.
+      {/* Convictions */}
+      <section className="relative overflow-hidden">
+        <div className="mx-auto max-w-[1600px] px-6 py-24 md:px-10 md:py-32">
+          <div className="mb-16">
+            <p className="overline text-muted-foreground mb-6">[ What we believe ]</p>
+            <h2 className="display-lg max-w-3xl">
+              Four convictions we run the studio on.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-12 gap-6 md:gap-10">
+            {CONVICTIONS.map((c, i) => (
+              <div
+                key={c.num}
+                className={`col-span-12 md:col-span-6 ${i % 2 === 1 ? 'md:mt-16' : ''}`}
+              >
+                <p className="overline accent-orange mb-3">{c.num}</p>
+                <h3 className="display-md mb-5" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
+                  {c.title}
+                </h3>
+                <p className="text-base text-muted-foreground leading-relaxed max-w-md">
+                  {c.body}
                 </p>
               </div>
-            </FadeUp>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {VALUES.map((value, i) => (
-                <FadeUp key={value.name} delay={i * 0.08}>
-                  <div className="bg-[#faf9f6] rounded-2xl p-8 h-full">
-                    <div className="w-10 h-10 rounded-xl bg-[#f05a28]/10 flex items-center justify-center mb-6">
-                      {value.icon}
-                    </div>
-                    <h3
-                      className="text-lg font-[500] text-[#1a1a1a] mb-3"
-                      style={{ fontFamily: 'var(--font-unbounded)' }}
-                    >
-                      {value.name}
-                    </h3>
-                    <p
-                      className="text-sm text-[#777] leading-relaxed"
-                      style={{ fontFamily: 'var(--font-inter)' }}
-                    >
-                      {value.description}
-                    </p>
-                  </div>
-                </FadeUp>
-              ))}
-            </div>
-
+            ))}
           </div>
-        </section>
-
-        {/* ── CTA ──────────────────────────────────────── */}
-        <section className="py-24 px-5 sm:px-8 lg:px-12">
-          <div className="max-w-[1200px] mx-auto">
-            <FadeUp>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 border-t border-[#1a1a1a]/8 pt-16">
-                <div>
-                  <h2
-                    className="text-3xl lg:text-4xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-3"
-                    style={{ fontFamily: 'var(--font-unbounded)' }}
-                  >
-                    Ready to Build<br />Something Real?
-                  </h2>
-                  <p className="text-base text-[#777]" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Let&apos;s find out if we are the right fit for each other.
-                  </p>
-                </div>
-                <Link
-                  href="/contact"
-                  className="flex-shrink-0 inline-flex items-center gap-2 bg-[#f05a28] text-white font-semibold text-[14px] px-8 py-4 rounded-full hover:bg-[#d94e20] transition-colors duration-200"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  Let&apos;s Talk →
-                </Link>
-              </div>
-            </FadeUp>
-          </div>
-        </section>
-
-      </main>
-      <Footer />
+        </div>
+      </section>
     </>
   )
 }

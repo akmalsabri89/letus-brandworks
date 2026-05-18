@@ -19,7 +19,7 @@ function VideoEmbed({ url }: { url: string }) {
   }
 
   return (
-    <div className="relative w-full aspect-video rounded-xl overflow-hidden my-10">
+    <div className="relative w-full aspect-video overflow-hidden rounded-sm my-10">
       <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen />
     </div>
   )
@@ -38,7 +38,6 @@ function groupGridBlocks(content: any[]): any[] {
     const layout = block?.layout
 
     if (block?._type === 'imageBlock' && (layout === 'grid-2' || layout === 'grid-3')) {
-      // Collect all consecutive blocks with the same grid layout
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const group: any[] = [block]
       let j = i + 1
@@ -92,10 +91,12 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
                     alt={value.caption || ''}
                     width={w}
                     height={h}
-                    className="w-full h-auto rounded-xl"
+                    className="w-full h-auto rounded-sm"
+                    sizes={layout === 'contained' ? '(min-width: 1024px) 720px, 80vw' : '(min-width: 1024px) 1280px, 80vw'}
+                    quality={95}
                   />
                   {value.caption && (
-                    <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
+                    <figcaption className="text-center text-xs text-muted-foreground mt-3">
                       {value.caption}
                     </figcaption>
                   )}
@@ -128,10 +129,12 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
                           alt={item.caption || ''}
                           width={w}
                           height={h}
-                          className="w-full h-auto rounded-xl"
+                          className="w-full h-auto rounded-sm"
+                          sizes={cols === 3 ? '(min-width: 1024px) 420px, (min-width: 640px) 50vw, 80vw' : '(min-width: 640px) 50vw, 80vw'}
+                          quality={95}
                         />
                         {item.caption && (
-                          <figcaption className="text-center text-xs text-[#999] mt-2 font-[family-name:var(--font-inter)]">
+                          <figcaption className="text-center text-xs text-muted-foreground mt-2">
                             {item.caption}
                           </figcaption>
                         )}
@@ -159,10 +162,10 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
                       muted
                       loop
                       playsInline
-                      className="w-full rounded-xl"
+                      className="w-full rounded-sm"
                     />
                     {value.caption && (
-                      <figcaption className="text-center text-xs text-[#999] mt-3 font-[family-name:var(--font-inter)]">
+                      <figcaption className="text-center text-xs text-muted-foreground mt-3">
                         {value.caption}
                       </figcaption>
                     )}
@@ -189,8 +192,8 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             const label = value.customLabel || value.label
             return (
               <div className="flex items-center gap-3 my-10 max-w-[800px] mx-auto">
-                <div className="w-6 h-px bg-[#f05a28]" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#f05a28] font-[family-name:var(--font-inter)]">
+                <div className="w-6 h-px bg-eruption" />
+                <span className="overline accent-orange">
                   {label}
                 </span>
               </div>
@@ -200,22 +203,29 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
 
         block: {
           normal: ({ children }) => (
-            <p className="max-w-[800px] mx-auto text-base text-[#555] leading-relaxed mb-5 font-[family-name:var(--font-inter)]">{children}</p>
+            <p className="max-w-[800px] mx-auto text-base text-muted-foreground leading-relaxed mb-5">{children}</p>
           ),
           h2: ({ children }) => (
-            <h2 className="max-w-[800px] mx-auto text-2xl lg:text-3xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mt-12 mb-4 font-[family-name:var(--font-unbounded)]">{children}</h2>
+            <h2 className="max-w-[800px] mx-auto display-md text-foreground mt-12 mb-4" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)' }}>{children}</h2>
           ),
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           h3: ({ children, value }: { children?: React.ReactNode; value?: any }) => {
             const text = (value?.children || []).map((c: { text?: string }) => c.text || '').join('')
             const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
             return (
-              <h3 id={id || undefined} className="max-w-[800px] mx-auto text-xl font-[500] text-[#1a1a1a] mt-8 mb-3 font-[family-name:var(--font-unbounded)]">{children}</h3>
+              <h3 id={id || undefined} className="max-w-[800px] mx-auto font-display text-xl font-medium text-foreground mt-8 mb-3">{children}</h3>
             )
           },
           blockquote: ({ children }) => (
-            <blockquote className="max-w-[800px] mx-auto border-l-2 border-[#f05a28] pl-6 my-8 italic text-lg text-[#1a1a1a]/70 font-[family-name:var(--font-inter)]">
-              {children}
+            <blockquote className="max-w-[800px] mx-auto my-12">
+              <p
+                className="font-display font-medium italic leading-snug text-foreground"
+                style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)' }}
+              >
+                <span aria-hidden className="accent-orange not-italic">&ldquo;</span>
+                {children}
+                <span aria-hidden className="accent-orange not-italic">&rdquo;</span>
+              </p>
             </blockquote>
           ),
         },

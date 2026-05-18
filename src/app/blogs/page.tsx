@@ -1,52 +1,46 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { Nav } from '@/components/layout/Nav'
-import { Footer } from '@/components/layout/Footer'
 import { client } from '@/sanity/lib/client'
 import { postsQuery } from '@/sanity/lib/queries'
 import { BlogGrid } from '@/components/blogs/BlogGrid'
-import { AnimatedSection } from '@/components/ui/animated-section'
+import { SectionNumber } from '@/components/SectionNumber'
+
+export const metadata: Metadata = {
+  title: 'Journal',
+  description: 'Thoughts on brand strategy, identity design, and building businesses that stand out.',
+}
 
 export default async function BlogsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const posts: any[] = await client.fetch(postsQuery)
 
   return (
-    <>
-      <Nav />
-      <main className="min-h-dvh bg-white pt-36 pb-24 px-5 sm:px-8 lg:px-12">
-        <div className="max-w-[1200px] mx-auto">
+    <section className="relative min-h-dvh overflow-hidden">
+      <SectionNumber n={5} />
 
-          <div className="mb-12">
-            <AnimatedSection>
-              <h1
-                className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
-                style={{ fontFamily: 'var(--font-unbounded)' }}
-              >
-                Blogs
-              </h1>
-            </AnimatedSection>
-            <AnimatedSection delay={0.08}>
-              <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
-                Thoughts on brand strategy, identity design, and building businesses that stand out.
-              </p>
-            </AnimatedSection>
+      {/* Header */}
+      <div className="mx-auto max-w-[1600px] px-6 pt-40 pb-16 md:px-10">
+        <p className="overline text-muted-foreground mb-4">[ Journal ]</p>
+        <h1 className="display-lg mb-6 max-w-3xl">The Dispatch</h1>
+        <p className="text-base text-muted-foreground max-w-md leading-relaxed">
+          Thoughts on brand strategy, identity design, and building businesses that stand out.
+        </p>
+      </div>
+
+      <div className="border-t border-foreground/10 mx-6 md:mx-10" />
+
+      {/* Posts */}
+      <div className="mx-auto max-w-[1600px] px-6 py-16 md:px-10">
+        {posts.length === 0 ? (
+          <div className="py-24 text-center">
+            <p className="overline text-muted-foreground">Posts coming soon.</p>
           </div>
-
-          {posts.length === 0 ? (
-            <div className="text-center py-24">
-              <p className="text-[#999] font-[family-name:var(--font-inter)] text-sm">
-                Posts coming soon.
-              </p>
-            </div>
-          ) : (
-            <Suspense>
-              <BlogGrid posts={posts} />
-            </Suspense>
-          )}
-
-        </div>
-      </main>
-      <Footer />
-    </>
+        ) : (
+          <Suspense>
+            <BlogGrid posts={posts} />
+          </Suspense>
+        )}
+      </div>
+    </section>
   )
 }

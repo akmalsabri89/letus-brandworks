@@ -1,69 +1,53 @@
-import { Nav } from '@/components/layout/Nav'
-import { Footer } from '@/components/layout/Footer'
+import type { Metadata } from 'next'
 import { client } from '@/sanity/lib/client'
 import { caseStudiesQuery } from '@/sanity/lib/queries'
 import { WorkCard } from '@/components/works/WorkCard'
-import { AnimatedSection } from '@/components/ui/animated-section'
+import { SectionNumber } from '@/components/SectionNumber'
 
-const ASPECT_RATIOS = ['aspect-[4/3]', 'aspect-[3/4]', 'aspect-[4/3]', 'aspect-[16/9]', 'aspect-[3/4]', 'aspect-[4/3]']
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function WorksGrid({ projects }: { projects: any[] }) {
-  if (projects.length === 0) {
-    return (
-      <div className="text-center py-24">
-        <p className="text-[#999] font-[family-name:var(--font-inter)] text-sm">
-          Case studies coming soon.
-        </p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="columns-1 md:columns-2 gap-5 space-y-5">
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      {projects.filter((p: any) => p?.slug?.current).map((project: any, i: number) => (
-        <AnimatedSection key={project._id} delay={Math.min(i, 3) * 0.07}>
-          <WorkCard
-            project={project}
-            aspect={ASPECT_RATIOS[i % ASPECT_RATIOS.length]}
-          />
-        </AnimatedSection>
-      ))}
-    </div>
-  )
+export const metadata: Metadata = {
+  title: 'Works',
+  description: 'A selection of brands we have built, shaped, and launched into the world.',
 }
 
+const ASPECTS = ['aspect-[4/3]', 'aspect-[3/4]', 'aspect-[4/3]', 'aspect-[16/9]', 'aspect-[3/4]', 'aspect-[4/3]']
+
 export default async function WorksPage() {
-  const projects = await client.fetch(caseStudiesQuery)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const projects: any[] = await client.fetch(caseStudiesQuery)
 
   return (
-    <>
-      <Nav />
-      <main className="min-h-dvh bg-white pt-36 pb-24 px-5 sm:px-8 lg:px-12">
-        <div className="max-w-[1200px] mx-auto">
+    <section className="relative min-h-dvh overflow-hidden">
+      <SectionNumber n={2} />
 
-          <div className="mb-16">
-            <AnimatedSection>
-              <h1
-                className="text-4xl lg:text-5xl font-[500] text-[#1a1a1a] leading-tight tracking-tight mb-4"
-                style={{ fontFamily: 'var(--font-unbounded)' }}
-              >
-                Our Work
-              </h1>
-            </AnimatedSection>
-            <AnimatedSection delay={0.08}>
-              <p className="text-base text-[#777] max-w-[440px]" style={{ fontFamily: 'var(--font-inter)' }}>
-                A selection of brands we have built, shaped, and launched into the world.
-              </p>
-            </AnimatedSection>
+      {/* Header */}
+      <div className="mx-auto max-w-[1600px] px-6 pt-40 pb-16 md:px-10">
+        <p className="overline text-muted-foreground mb-4">[ Works ]</p>
+        <h1 className="display-lg mb-6 max-w-3xl">Our Work</h1>
+        <p className="text-base text-muted-foreground max-w-md leading-relaxed">
+          A selection of brands we have built, shaped, and launched into the world.
+        </p>
+      </div>
+
+      <div className="border-t border-foreground/10 mx-6 md:mx-10" />
+
+      {/* Grid */}
+      <div className="mx-auto max-w-[1600px] px-6 py-16 md:px-10">
+        {projects.filter(p => p?.slug?.current).length === 0 ? (
+          <div className="py-24 text-center">
+            <p className="overline text-muted-foreground">Case studies coming soon.</p>
           </div>
-
-          <WorksGrid projects={projects} />
-
-        </div>
-      </main>
-      <Footer />
-    </>
+        ) : (
+          <div className="columns-1 md:columns-2 gap-6 space-y-6">
+            {projects.filter((p: any) => p?.slug?.current).map((project: any, i: number) => (
+              <WorkCard
+                key={project._id}
+                project={project}
+                aspect={ASPECTS[i % ASPECTS.length]}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   )
 }

@@ -19,7 +19,7 @@ const steps: Step[] = [
     number: '02',
     name: 'Strategize',
     description:
-      'We build your brand platform — positioning, voice, and visual direction — before a single pixel is designed.',
+      'We build your brand platform: positioning, voice, and visual direction. All before a single pixel is designed.',
   },
   {
     number: '03',
