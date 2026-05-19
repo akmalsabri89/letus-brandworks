@@ -2,47 +2,26 @@ import { groq } from 'next-sanity'
 
 export const caseStudiesQuery = groq`
   *[_type == "caseStudy"] | order(order asc) {
-    _id, title, slug, client, category, sector, year,
-    summary, excerpt, featured,
-    coverImage { asset->{ _id, url }, hotspot, crop },
-    services,
-    "galleryCount": count(gallery)
+    _id, title, slug, client, category, year,
+    excerpt, featured,
+    coverImage { asset->{ _id, url }, hotspot, crop }
   }
 `
 
 export const featuredCaseStudiesQuery = groq`
   *[_type == "caseStudy" && featured == true] | order(order asc) [0..3] {
-    _id, title, slug, client, category, sector, year,
-    summary, excerpt,
-    coverImage { asset->{ _id, url }, hotspot, crop },
-    services
+    _id, title, slug, client, category, year,
+    excerpt,
+    coverImage { asset->{ _id, url }, hotspot, crop }
   }
 `
 
 export const caseStudyBySlugQuery = groq`
   *[_type == "caseStudy" && slug.current == $slug][0] {
-    _id, title, slug, client, category, sector, year,
-    headline, summary, excerpt,
-    challenge, solution,
-    quote, quoteBy,
-    services,
-    metrics[] { value, label },
+    _id, title, slug, client, category, year,
+    excerpt,
     stats[] { value, label },
     coverImage { asset->{ _id, url, metadata { dimensions { width, height } } }, hotspot, crop },
-    gallery[] {
-      asset->{ _id, url, metadata { dimensions { width, height } } },
-      hotspot, crop, caption, alt
-    },
-    chapters[] {
-      title,
-      body[] {
-        ...,
-        _type == "image" => {
-          ...,
-          asset->{ _id, url, metadata { dimensions { width, height } } }
-        }
-      }
-    },
     content[] {
       ...,
       _type == "imageBlock" => {
@@ -59,7 +38,7 @@ export const caseStudyBySlugQuery = groq`
 
 export const relatedCaseStudiesQuery = groq`
   *[_type == "caseStudy" && slug.current != $slug] | order(order asc) [0..2] {
-    _id, title, slug, client, category, sector,
+    _id, title, slug, client, category,
     coverImage { asset->{ _id, url }, hotspot, crop }
   }
 `
