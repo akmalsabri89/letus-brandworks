@@ -2,33 +2,34 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll } from 'framer-motion'
 import { SectionNumber } from '@/components/SectionNumber'
+import { Parallax } from '@/components/Parallax'
 
 const STEPS = [
   {
     num: '01',
-    title: 'Listen',
-    body: 'We sit in your meetings before we draw a line. Workshops, interviews, document archaeology. The brief gets shorter, sharper, harder to argue with.',
+    title: 'Audit',
+    body: 'We review the brand as it stands: positioning, visuals, messaging, competitors, and every touchpoint your audience already sees.',
     visual: 'https://images.unsplash.com/photo-1681949103006-70066fb25dfe?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
   },
   {
     num: '02',
-    title: 'Locate',
-    body: 'We map the white space competitors are too polite to claim. Then we test it against your audience until the position only one brand can credibly hold. Yours.',
+    title: 'Discovery',
+    body: 'We define the opportunity. Audience, market, goals, voice, and direction are sharpened before design begins.',
     visual: 'https://images.unsplash.com/photo-1568359415314-7ddb3bd0c828?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
   },
   {
     num: '03',
-    title: 'Erupt',
-    body: 'Now the noise. Identity, voice, system. We design the version of your brand that walks into the room and stops the conversation.',
+    title: 'Design',
+    body: 'We turn the strategy into a working brand system: identity, typography, colour, layouts, assets, and key applications.',
     visual: '/process/erupt.png',
   },
   {
     num: '04',
-    title: 'Land',
-    body: "Guidelines, training, launch. We hand-off so cleanly your team forgets we ever ran the show. Then we stay on speed-dial for the next eruption.",
-    visual: 'https://images.unsplash.com/photo-1563461660947-507ef49e9c47?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
+    title: 'Launch',
+    body: 'We prepare the files, guidelines, and rollout support your team needs to use the brand with confidence.',
+    visual: '/covers/clean-traces.png',
   },
 ]
 
@@ -43,28 +44,28 @@ export function ProcessScroll() {
     <section
       ref={sectionRef}
       id="home-process"
-      className="relative bg-foreground text-background"
+      className="relative bg-[#141414] text-[#faf9f6]"
       style={{ minHeight: `${100 + STEPS.length * 70}vh` }}
     >
-      <SectionNumber n={4} className="!text-background/[0.06]" />
+      <SectionNumber n={4} className="!text-[#faf9f6]/[0.06]" />
 
       <div className="mx-auto grid max-w-[1600px] grid-cols-12 gap-6 px-6 md:px-10">
 
         {/* Sticky left */}
         <div className="col-span-12 md:col-span-5">
           <div className="sticky top-32 py-24">
-            <p className="overline opacity-60">[ Our Process ]</p>
+            <p className="overline text-[#faf9f6]/60">[ Our Process ]</p>
             <h2 className="display-lg mt-6">
               Four moves.<br />
               <em className="italic accent-orange">One eruption.</em>
             </h2>
-            <p className="mt-8 max-w-md text-base leading-relaxed opacity-70">
-              We don&apos;t do logo sprints. We run a method tuned to make
-              brands credible, distinctive, and impossible to scroll past.
+            <p className="mt-8 max-w-md text-base leading-relaxed text-[#faf9f6]/70">
+              A clear path from what the brand is today to the system it needs
+              to become. Direct enough to understand. Deep enough to hold up.
             </p>
 
             {/* Scroll progress bar */}
-            <div className="mt-10 h-[3px] w-full bg-background/15">
+            <div className="mt-10 h-[3px] w-full bg-[#faf9f6]/15">
               <motion.div
                 style={{ scaleX: scrollYProgress, transformOrigin: '0% 50%' }}
                 className="h-full bg-eruption"
@@ -88,26 +89,14 @@ export function ProcessScroll() {
 }
 
 function ProcessCard({ step }: { step: typeof STEPS[number] }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  })
-  const y = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3])
-
   return (
-    <motion.div
-      ref={ref}
-      style={{ opacity }}
-      className="grid grid-cols-12 gap-4"
-    >
+    <div className="grid grid-cols-12 gap-4 border-t border-[#faf9f6]/10 pt-8">
       <div className="col-span-2">
         <span className="overline opacity-60">{step.num}</span>
       </div>
       <div className="col-span-10">
-        <div className="relative aspect-[5/4] overflow-hidden rounded-sm">
-          <motion.div style={{ y }} className="absolute inset-0 h-[120%]">
+        <div className="relative aspect-[5/4] overflow-hidden rounded-sm bg-[#faf9f6]/5">
+          <Parallax intensity={40}>
             <Image
               src={step.visual}
               alt={step.title}
@@ -116,16 +105,15 @@ function ProcessCard({ step }: { step: typeof STEPS[number] }) {
               sizes="(min-width: 768px) 50vw, 90vw"
               quality={95}
             />
-          </motion.div>
-          <div className="absolute inset-0 bg-foreground/20" />
+          </Parallax>
         </div>
-        <h3 className="display-lg mt-6">
+        <h3 className="display-lg mt-6 text-[#faf9f6]">
           {step.title}<span className="accent-orange">.</span>
         </h3>
-        <p className="mt-4 max-w-xl text-base leading-relaxed opacity-80">
+        <p className="mt-4 max-w-xl text-base leading-relaxed text-[#faf9f6]/75">
           {step.body}
         </p>
       </div>
-    </motion.div>
+    </div>
   )
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Unbounded, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google'
-import { ThemeProvider } from '@/components/ThemeProvider'
 import { StructuredData } from '@/components/StructuredData'
+import { MetaPixel } from '@/components/MetaPixel'
 import './globals.css'
 
 const unbounded = Unbounded({
@@ -44,12 +44,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${unbounded.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+      className={`dark ${unbounded.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
     >
       <body>
         <StructuredData />
-        <ThemeProvider>{children}</ThemeProvider>
+        <MetaPixel />
+        {children}
       </body>
     </html>
   )

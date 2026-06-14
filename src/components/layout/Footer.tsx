@@ -110,9 +110,17 @@ export function Footer() {
         <p className="overline text-muted-foreground">
           © {new Date().getFullYear()} Letus Brandworks
         </p>
-        <p className="overline text-muted-foreground">
-          Designed &amp; built by Letus
-        </p>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/privacy-policy"
+            className="overline text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Privacy Policy
+          </Link>
+          <p className="overline text-muted-foreground">
+            Designed &amp; built by Letus
+          </p>
+        </div>
       </div>
     </footer>
   )

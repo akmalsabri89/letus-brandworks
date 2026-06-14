@@ -4,18 +4,13 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sun, Moon } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { Menu, X } from 'lucide-react'
 import { NAV_LINKS } from '@/lib/constants'
 
 export function Navbar() {
-  const { resolvedTheme, setTheme } = useTheme()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
-
-  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -31,9 +26,6 @@ export function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  const isDark = resolvedTheme === 'dark'
-  const logoSrc = isDark ? '/brand/logo-white.svg' : '/brand/logo.svg'
-
   return (
     <>
       <header
@@ -43,9 +35,7 @@ export function Navbar() {
       >
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4 md:px-10 md:py-5">
           <Link href="/" aria-label="Letus Brandworks home" className="flex items-center gap-3">
-            {mounted && (
-              <img src={logoSrc} alt="Letus Brandworks" className="h-7 w-auto md:h-8" draggable="false" />
-            )}
+            <img src="/brand/logo-white.svg" alt="Letus Brandworks" className="h-7 w-auto md:h-8" draggable="false" />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -65,27 +55,6 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {mounted && (
-              <button
-                type="button"
-                onClick={() => setTheme(isDark ? 'light' : 'dark')}
-                aria-label="Toggle theme"
-                className="grid h-10 w-10 place-items-center rounded-full border border-border transition-colors hover:bg-accent"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  {isDark ? (
-                    <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.25 }}>
-                      <Sun size={16} />
-                    </motion.span>
-                  ) : (
-                    <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.25 }}>
-                      <Moon size={16} />
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </button>
-            )}
-
             <Link
               href="/contact"
               data-cursor="→ Let's Talk"
