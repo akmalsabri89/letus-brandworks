@@ -1,14 +1,30 @@
 import type { Metadata } from 'next'
 import { Mail, MessageCircle } from 'lucide-react'
 import { CTAForm } from '@/components/sections/CTAForm'
-import { CONTACT } from '@/config/contact'
+import { client } from '@/sanity/lib/client'
+import { siteSettingsQuery } from '@/sanity/lib/queries'
 
 export const metadata: Metadata = {
   title: 'Contact',
   description: "Tell us about your brand and what you're trying to build. We'll take it from there.",
 }
 
-export default function ContactPage() {
+interface SiteSettings {
+  email?: string
+  whatsapp?: { number?: string; display?: string }
+  socials?: Array<{ platform: string; url: string }>
+}
+
+export default async function ContactPage() {
+  const settings: SiteSettings = await client.fetch(siteSettingsQuery) ?? {}
+
+  const email = settings.email ?? 'hello@letusbrandworks.com'
+  const whatsappUrl = settings.whatsapp?.number
+    ? `https://wa.me/${settings.whatsapp.number}`
+    : 'https://wa.me/60143693225'
+  const whatsappDisplay = settings.whatsapp?.display ?? '+6014-369 3225'
+  const socials = settings.socials ?? []
+
   return (
     <section className="min-h-dvh">
       <div className="mx-auto max-w-[1600px] px-6 pt-40 pb-24 md:px-10">
@@ -35,27 +51,27 @@ export default function ContactPage() {
 
             <div className="flex flex-col gap-4 mb-10">
               <a
-                href={`mailto:${CONTACT.email}`}
+                href={`mailto:${email}`}
                 className="flex items-center gap-4 rounded-sm border border-border px-5 py-4 text-foreground hover:border-primary hover:text-primary transition-colors group"
               >
                 <Mail size={18} className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                <span className="text-sm font-medium">{CONTACT.email}</span>
+                <span className="text-sm font-medium">{email}</span>
               </a>
 
               <a
-                href={CONTACT.whatsapp.url}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 rounded-sm border border-border px-5 py-4 text-foreground hover:border-[#25d366] hover:text-[#25d366] transition-colors group"
               >
                 <MessageCircle size={18} className="text-muted-foreground group-hover:text-[#25d366] transition-colors flex-shrink-0" />
-                <span className="text-sm font-medium">{CONTACT.whatsapp.display}</span>
+                <span className="text-sm font-medium">{whatsappDisplay}</span>
               </a>
             </div>
 
-            {CONTACT.socials.length > 0 && (
+            {socials.length > 0 && (
               <div className="flex flex-wrap gap-3">
-                {CONTACT.socials.map(s => (
+                {socials.map(s => (
                   <a
                     key={s.platform}
                     href={s.url}

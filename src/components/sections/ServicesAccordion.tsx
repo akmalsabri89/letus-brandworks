@@ -3,16 +3,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
+import type { SanityService } from '@/components/sections/HomeServices'
 
-interface Service {
-  num: string
-  name: string
-  tagline: string
-  chips: string[]
-  description: string
-}
-
-export function ServicesAccordion({ services }: { services: Service[] }) {
+export function ServicesAccordion({ services }: { services: SanityService[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
@@ -21,7 +14,7 @@ export function ServicesAccordion({ services }: { services: Service[] }) {
         const isOpen = openIndex === i
 
         return (
-          <li key={s.num} className="border-b border-foreground/10">
+          <li key={s._id} className="border-b border-foreground/10">
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : i)}
@@ -37,9 +30,9 @@ export function ServicesAccordion({ services }: { services: Service[] }) {
                       ? 'scale-[1.15] accent-orange'
                       : 'text-muted-foreground group-hover:scale-[1.15] group-hover:accent-orange'
                   }`}
-                  style={s.num === '+' ? { fontSize: '1rem', lineHeight: 1 } : undefined}
+                  style={s.displayNumber === '+' ? { fontSize: '1rem', lineHeight: '1' } : undefined}
                 >
-                  {s.num}
+                  {s.displayNumber}
                 </span>
               </div>
 
@@ -56,16 +49,18 @@ export function ServicesAccordion({ services }: { services: Service[] }) {
               </div>
 
               <div className="col-span-12 md:col-span-5 lg:col-span-6 flex items-start md:items-center">
-                <div className="flex flex-wrap gap-2">
-                  {s.chips.map((chip) => (
-                    <span
-                      key={chip}
-                      className="overline border border-foreground/15 px-2.5 py-1 text-foreground/70 text-[0.65rem]"
-                    >
-                      {chip}
-                    </span>
-                  ))}
-                </div>
+                {s.chips?.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {s.chips.map((chip) => (
+                      <span
+                        key={chip}
+                        className="overline border border-foreground/15 px-2.5 py-1 text-foreground/70 text-[0.65rem]"
+                      >
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="hidden md:col-span-1 md:flex md:justify-self-end md:items-center md:justify-center">
@@ -98,7 +93,7 @@ export function ServicesAccordion({ services }: { services: Service[] }) {
                   <div className="grid grid-cols-12 gap-6 md:gap-8 pb-12 md:pb-16">
                     <div className="col-span-12 md:col-start-2 md:col-span-9 lg:col-start-2 lg:col-span-7">
                       <p className="text-base md:text-lg text-foreground/80 leading-relaxed max-w-2xl">
-                        {s.description}
+                        {s.fullDescription}
                       </p>
                     </div>
                   </div>

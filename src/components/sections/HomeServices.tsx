@@ -5,31 +5,20 @@ import { ArrowUpRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { SectionNumber } from '@/components/SectionNumber'
 
-const HERO_SERVICES = [
-  {
-    num: '01',
-    name: 'Brand Strategy',
-    tagline: 'Position. Provoke. Prove.',
-    body: 'We dig past the deck. Stakeholder interviews, market dissection, and a positioning sharp enough to defend in any boardroom.',
-    tags: ['Discovery', 'Positioning', 'Narrative'],
-  },
-  {
-    num: '02',
-    name: 'Visual Identity',
-    tagline: 'Marks worth defending.',
-    body: 'Logos, typography, colour, art direction. Built as a system that survives boardrooms, retailers, and screens we haven’t invented yet.',
-    tags: ['Identity System', 'Guidelines', 'Art Direction'],
-  },
-  {
-    num: '+',
-    name: 'Brand Stack',
-    tagline: 'We stay close.',
-    body: 'Your studio for what comes next.',
-    tags: ['Web', 'Digital Marketing', 'Social', 'Graphic Design'],
-  },
-]
+export interface SanityService {
+  _id: string
+  name: string
+  displayNumber: string
+  tagline: string
+  shortDescription: string
+  fullDescription: string
+  chips: string[]
+  order: number
+}
 
-export function HomeServices() {
+export function HomeServices({ services }: { services: SanityService[] }) {
+  if (services.length === 0) return null
+
   return (
     <section id="home-services" className="relative overflow-hidden px-6 py-24 md:px-10 md:py-40">
       <SectionNumber n={3} position="right" />
@@ -45,11 +34,10 @@ export function HomeServices() {
           </h2>
         </div>
 
-        {/* Hero services */}
         <ul className="border-t border-foreground/10">
-          {HERO_SERVICES.map((s, i) => (
+          {services.map((s, i) => (
             <motion.li
-              key={s.num}
+              key={s._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10%' }}
@@ -57,7 +45,7 @@ export function HomeServices() {
               className="group grid grid-cols-12 gap-6 border-b border-foreground/10 py-12 md:gap-8 md:py-16"
             >
               <div className="col-span-2 md:col-span-1">
-                <span className="overline text-muted-foreground">{s.num}</span>
+                <span className="overline text-muted-foreground">{s.displayNumber}</span>
               </div>
 
               <div className="col-span-10 md:col-span-6">
@@ -74,18 +62,20 @@ export function HomeServices() {
 
               <div className="col-span-12 md:col-span-4">
                 <p className="text-base leading-relaxed text-muted-foreground">
-                  {s.body}
+                  {s.shortDescription}
                 </p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {s.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="overline border border-foreground/15 px-2.5 py-1 text-foreground/70 text-[0.65rem]"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {s.chips?.length > 0 && (
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {s.chips.map((chip) => (
+                      <span
+                        key={chip}
+                        className="overline border border-foreground/15 px-2.5 py-1 text-foreground/70 text-[0.65rem]"
+                      >
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <ArrowUpRight

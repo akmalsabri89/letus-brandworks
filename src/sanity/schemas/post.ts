@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { TAG_OPTIONS } from '../lib/tagOptions'
 
 export const post = defineType({
   name: 'post',
@@ -45,7 +46,16 @@ export const post = defineType({
     defineField({
       name: 'tags',
       title: 'Tags',
-      description: 'Type a keyword and press comma or Enter to add. Keywords for SEO and GEO.',
+      description: 'Select all that apply. Controls which case studies appear in the blog sidebar.',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: { list: TAG_OPTIONS },
+      group: 'content',
+    }),
+    defineField({
+      name: 'customTags',
+      title: 'Custom Tags',
+      description: 'For topics not in the list above. Type a keyword and press Enter.',
       type: 'array',
       of: [{ type: 'string' }],
       options: { layout: 'tags' },

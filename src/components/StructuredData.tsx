@@ -1,4 +1,3 @@
-import { CONTACT } from '@/config/contact'
 import { SITE_URL } from '@/lib/constants'
 
 const ORGANIZATION_SCHEMA = {
@@ -11,8 +10,8 @@ const ORGANIZATION_SCHEMA = {
   url: SITE_URL,
   logo: `${SITE_URL}/letus-mark.svg`,
   image: `${SITE_URL}/letus-mark.svg`,
-  email: CONTACT.email,
-  telephone: CONTACT.whatsapp.number,
+  email: 'hello@letusbrandworks.com',
+  telephone: '+60143693225',
   address: {
     '@type': 'PostalAddress',
     addressRegion: 'Kedah',

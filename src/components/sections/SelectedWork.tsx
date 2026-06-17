@@ -7,28 +7,26 @@ import { ArrowUpRight } from 'lucide-react'
 import { SectionNumber } from '@/components/SectionNumber'
 import { Parallax } from '@/components/Parallax'
 
-interface Project {
-  id: string
-  name: string
+export interface FeaturedProject {
+  _id: string
+  title: string
+  slug: { current: string }
   category: string
-  cover: string | null
-  href: string
+  coverImage?: { asset?: { url?: string } }
 }
 
-const PROJECTS: Project[] = [
-  { id: 'geliga', name: 'Geliga', category: 'Brand Strategy & Identity', cover: '/covers/geliga.png', href: '/works/geliga' },
-  { id: 'gullate', name: 'Gullate', category: 'Logo Design', cover: null, href: '/works/gullate' },
-  { id: 'vkl-media', name: 'VKL Media', category: 'Brand Identity', cover: '/covers/vkl-media.png', href: '/works/vkl-media' },
-  { id: 'clean-traces', name: 'Clean Traces', category: 'Brand Identity', cover: '/covers/clean-traces.png', href: '/works/clean-traces' },
-  { id: 'perintis', name: 'Perintis', category: 'Brand Identity', cover: null, href: '/works/perintis' },
+const ASPECT_CLASSES = [
+  'aspect-[4/3]',
+  'aspect-[3/4]',
+  'aspect-square',
+  'aspect-[16/10]',
+  'aspect-[2/1]',
 ]
 
-function Card({ project, index, shouldReduceMotion, aspectClass, covers }: {
-  project: Project
+function Card({ project, index, shouldReduceMotion }: {
+  project: FeaturedProject
   index: number
   shouldReduceMotion: boolean | null
-  aspectClass: string
-  covers: Record<string, string>
 }) {
   const motionProps = shouldReduceMotion
     ? {}
@@ -39,17 +37,19 @@ function Card({ project, index, shouldReduceMotion, aspectClass, covers }: {
         transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: index * 0.08 },
       }
 
-  const coverSrc = covers[project.id] ?? project.cover
+  const coverSrc = project.coverImage?.asset?.url ?? null
+  const href = `/works/${project.slug.current}`
+  const aspectClass = ASPECT_CLASSES[index] ?? 'aspect-[4/3]'
 
   return (
     <motion.div className="group" {...motionProps}>
-      <Link href={project.href} className="block">
+      <Link href={href} className="block">
         <div className={`relative overflow-hidden rounded-sm ${aspectClass} bg-muted`}>
           {coverSrc ? (
             <Parallax intensity={40}>
               <Image
                 src={coverSrc}
-                alt={project.name}
+                alt={project.title}
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 sizes="(min-width: 768px) 50vw, 100vw"
@@ -58,12 +58,12 @@ function Card({ project, index, shouldReduceMotion, aspectClass, covers }: {
             </Parallax>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-secondary transition-transform duration-700 ease-out group-hover:scale-[1.04]">
-              <span className="font-display text-4xl font-medium text-foreground/10 select-none">{project.name}</span>
+              <span className="font-display text-4xl font-medium text-foreground/10 select-none">{project.title}</span>
             </div>
           )}
         </div>
         <div className="mt-4 flex items-baseline justify-between">
-          <h3 className="font-display text-base font-medium text-foreground">{project.name}</h3>
+          <h3 className="font-display text-base font-medium text-foreground">{project.title}</h3>
           <span className="text-foreground text-sm opacity-0 translate-x-0 group-hover:translate-x-1 group-hover:opacity-100 transition-all duration-300 flex-shrink-0 ml-3">→</span>
         </div>
         <p className="overline text-muted-foreground mt-1 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
@@ -74,8 +74,10 @@ function Card({ project, index, shouldReduceMotion, aspectClass, covers }: {
   )
 }
 
-export function SelectedWork({ covers = {} }: { covers?: Record<string, string> }) {
+export function SelectedWork({ projects = [] }: { projects?: FeaturedProject[] }) {
   const shouldReduceMotion = useReducedMotion()
+
+  if (projects.length === 0) return null
 
   return (
     <section className="relative overflow-hidden px-6 py-24 md:px-10 md:py-32">
@@ -96,29 +98,37 @@ export function SelectedWork({ covers = {} }: { covers?: Record<string, string> 
         {/* Row 1 — landscape hero + portrait offset */}
         <div className="grid grid-cols-12 gap-5 mb-5 md:mb-10">
           <div className="col-span-12 md:col-span-7">
-            <Card project={PROJECTS[0]} index={0} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[4/3]" covers={covers} />
+            <Card project={projects[0]} index={0} shouldReduceMotion={shouldReduceMotion} />
           </div>
-          <div className="col-span-12 md:col-span-5 md:mt-16">
-            <Card project={PROJECTS[1]} index={1} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[3/4]" covers={covers} />
-          </div>
+          {projects[1] && (
+            <div className="col-span-12 md:col-span-5 md:mt-16">
+              <Card project={projects[1]} index={1} shouldReduceMotion={shouldReduceMotion} />
+            </div>
+          )}
         </div>
 
         {/* Row 2 — square + wide landscape */}
-        <div className="grid grid-cols-12 gap-5 mb-5 md:mb-10">
-          <div className="col-span-12 md:col-span-5 md:-mt-16">
-            <Card project={PROJECTS[2]} index={2} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-square" covers={covers} />
+        {projects[2] && (
+          <div className="grid grid-cols-12 gap-5 mb-5 md:mb-10">
+            <div className="col-span-12 md:col-span-5 md:-mt-16">
+              <Card project={projects[2]} index={2} shouldReduceMotion={shouldReduceMotion} />
+            </div>
+            {projects[3] && (
+              <div className="col-span-12 md:col-span-7">
+                <Card project={projects[3]} index={3} shouldReduceMotion={shouldReduceMotion} />
+              </div>
+            )}
           </div>
-          <div className="col-span-12 md:col-span-7">
-            <Card project={PROJECTS[3]} index={3} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[16/10]" covers={covers} />
-          </div>
-        </div>
+        )}
 
-        {/* Row 3 — centered panoramic close */}
-        <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-12 md:col-span-8 md:col-start-3">
-            <Card project={PROJECTS[4]} index={4} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[2/1]" covers={covers} />
+        {/* Row 3 — centered panoramic */}
+        {projects[4] && (
+          <div className="grid grid-cols-12 gap-5">
+            <div className="col-span-12 md:col-span-8 md:col-start-3">
+              <Card project={projects[4]} index={4} shouldReduceMotion={shouldReduceMotion} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

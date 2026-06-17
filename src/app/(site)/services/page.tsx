@@ -2,40 +2,20 @@ import type { Metadata } from 'next'
 import { SectionNumber } from '@/components/SectionNumber'
 import { ProcessScroll } from '@/components/sections/ProcessScroll'
 import { ServicesAccordion } from '@/components/sections/ServicesAccordion'
+import { client } from '@/sanity/lib/client'
+import { servicesQuery } from '@/sanity/lib/queries'
+import type { SanityService } from '@/components/sections/HomeServices'
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Services',
   description: 'Brand-led. Always. Brand strategy and visual identity as the foundation, with web, marketing, social, and graphic design as ongoing partnership.',
 }
 
-const SERVICES = [
-  {
-    num: '01',
-    name: 'Brand Strategy',
-    tagline: 'Position. Provoke. Prove.',
-    chips: ['Discovery', 'Positioning', 'Narrative', 'Naming', 'Brand Voice'],
-    description:
-      'We dig past the deck. Stakeholder interviews, market dissection, and a positioning sharp enough to defend in any boardroom. Strategy is the invisible architecture every other decision rests on. Get it right and the rest gets easier.',
-  },
-  {
-    num: '02',
-    name: 'Visual Identity',
-    tagline: 'Marks worth defending.',
-    chips: ['Identity System', 'Guidelines', 'Art Direction', 'Logo', 'Typography'],
-    description:
-      'Logos, typography, colour, art direction. Built as a system that survives boardrooms, retailers, and screens we haven’t invented yet. Every mark we ship is engineered to scale from a favicon to a billboard without losing voice.',
-  },
-  {
-    num: '+',
-    name: 'Brand Stack',
-    tagline: 'We stay close.',
-    chips: ['Website', 'Social Media', 'Graphic Design', 'Digital Marketing'],
-    description:
-      'Once the brand is built, we stay on as your creative and marketing partner. Web, social, ads, ongoing design. The studio that already knows your brand inside out. Bundled into a retainer or scoped per project, your call.',
-  },
-]
+export default async function ServicesPage() {
+  const services = await client.fetch<SanityService[]>(servicesQuery)
 
-export default function ServicesPage() {
   return (
     <>
       {/* Hero */}
@@ -53,10 +33,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Accordion services */}
+      {/* Accordion */}
       <section className="border-t border-foreground/10">
         <div className="mx-auto max-w-[1600px] px-6 md:px-10">
-          <ServicesAccordion services={SERVICES} />
+          <ServicesAccordion services={services} />
         </div>
       </section>
 

@@ -5,27 +5,28 @@ import { Testimonials } from '@/components/sections/Testimonials'
 import { HomeHero } from '@/components/sections/HomeHero'
 import { HomeServices } from '@/components/sections/HomeServices'
 import { client } from '@/sanity/lib/client'
-import { caseStudiesQuery } from '@/sanity/lib/queries'
+import { featuredCaseStudiesQuery, homeServicesQuery, testimonialsQuery } from '@/sanity/lib/queries'
+import type { FeaturedProject } from '@/components/sections/SelectedWork'
+import type { SanityService } from '@/components/sections/HomeServices'
+import type { SanityTestimonial } from '@/components/sections/Testimonials'
+
+export const revalidate = 60
 
 export default async function Home() {
-  const sanityProjects: Array<{ slug?: { current?: string }; coverImage?: { asset?: { url?: string } } }> =
-    await client.fetch(caseStudiesQuery)
-
-  const covers: Record<string, string> = {}
-  for (const p of sanityProjects) {
-    if (p.slug?.current && p.coverImage?.asset?.url) {
-      covers[p.slug.current] = p.coverImage.asset.url
-    }
-  }
+  const [projects, homeServices, testimonials] = await Promise.all([
+    client.fetch<FeaturedProject[]>(featuredCaseStudiesQuery),
+    client.fetch<SanityService[]>(homeServicesQuery),
+    client.fetch<SanityTestimonial[]>(testimonialsQuery),
+  ])
 
   return (
     <>
       <HomeHero />
       <LogoStrip />
-      <SelectedWork covers={covers} />
-      <HomeServices />
+      <SelectedWork projects={projects} />
+      <HomeServices services={homeServices} />
       <ProcessScroll />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
     </>
   )
 }

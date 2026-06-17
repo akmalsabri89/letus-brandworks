@@ -1,6 +1,16 @@
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { FooterTicker } from '@/components/FooterTicker'
+import { client } from '@/sanity/lib/client'
+import { siteSettingsQuery } from '@/sanity/lib/queries'
+
+interface Social { platform: string; url: string }
+interface SiteSettings {
+  email?: string
+  whatsapp?: { number?: string; display?: string }
+  socials?: Social[]
+  footerHeading?: string
+}
 
 const FOOTER_LINKS = [
   { label: 'Works', href: '/works' },
@@ -10,13 +20,13 @@ const FOOTER_LINKS = [
   { label: 'Contact', href: '/contact' },
 ]
 
-const SOCIAL = [
-  { label: 'Instagram', href: 'https://instagram.com/letusbrandworks' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/company/letusbrandworks' },
-  { label: 'Behance', href: 'https://behance.net/letusbrandworks' },
-]
+export async function Footer() {
+  const settings: SiteSettings = await client.fetch(siteSettingsQuery) ?? {}
 
-export function Footer() {
+  const email = settings.email ?? 'hello@letusbrandworks.com'
+  const socials = settings.socials ?? []
+  const footerHeading = settings.footerHeading ?? 'Ready to ignite your brand?'
+
   return (
     <footer className="relative bg-background border-t border-foreground/10">
       <FooterTicker />
@@ -24,7 +34,7 @@ export function Footer() {
       {/* CTA strip */}
       <div className="mx-auto max-w-[1600px] px-6 md:px-10 py-24 md:py-32 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
         <h2 className="display-lg max-w-2xl">
-          Ready to ignite your brand?
+          {footerHeading}
         </h2>
         <Link
           href="/contact"
@@ -75,32 +85,34 @@ export function Footer() {
           </ul>
         </div>
 
-        <div>
-          <p className="overline text-muted-foreground mb-3">Social</p>
-          <ul className="flex flex-col gap-2">
-            {SOCIAL.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {s.label}
-                  <ArrowUpRight size={12} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {socials.length > 0 && (
+          <div>
+            <p className="overline text-muted-foreground mb-3">Social</p>
+            <ul className="flex flex-col gap-2">
+              {socials.map((s) => (
+                <li key={s.platform}>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {s.platform}
+                    <ArrowUpRight size={12} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div>
           <p className="overline text-muted-foreground mb-3">Contact</p>
           <a
-            href="mailto:hello@letusbrandworks.com"
+            href={`mailto:${email}`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors break-all"
           >
-            hello@letusbrandworks.com
+            {email}
           </a>
         </div>
       </div>

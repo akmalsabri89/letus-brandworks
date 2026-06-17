@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { ArrowLeft } from 'lucide-react'
 import { client } from '@/sanity/lib/client'
-import { postBySlugQuery, postsQuery, relatedCaseStudiesQuery } from '@/sanity/lib/queries'
+import { postBySlugQuery, postsQuery, sidebarCaseStudiesQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { PortableTextRenderer } from '@/components/sanity/PortableTextRenderer'
 import { BlogSidebar } from '@/components/blogs/BlogSidebar'
@@ -49,13 +49,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const [post, relatedCaseStudies] = await Promise.all([
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    client.fetch(postBySlugQuery, { slug }) as Promise<any>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    client.fetch(relatedCaseStudiesQuery, { slug }) as Promise<any[]>,
-  ])
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const post: any = await client.fetch(postBySlugQuery, { slug })
   if (!post) notFound()
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const allTags = [...(post.tags ?? []), ...(post.customTags ?? [])]
+  const relatedCaseStudies: any[] = await client.fetch(sidebarCaseStudiesQuery, {
+    tags: allTags,
+  })
 
   const coverSrc = post.coverImage ? urlFor(post.coverImage).width(1400).url() : null
 
