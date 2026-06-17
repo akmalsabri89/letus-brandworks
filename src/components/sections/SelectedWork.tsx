@@ -23,11 +23,12 @@ const PROJECTS: Project[] = [
   { id: 'perintis', name: 'Perintis', category: 'Brand Identity', cover: null, href: '/works/perintis' },
 ]
 
-function Card({ project, index, shouldReduceMotion, aspectClass }: {
+function Card({ project, index, shouldReduceMotion, aspectClass, covers }: {
   project: Project
   index: number
   shouldReduceMotion: boolean | null
   aspectClass: string
+  covers: Record<string, string>
 }) {
   const motionProps = shouldReduceMotion
     ? {}
@@ -38,14 +39,16 @@ function Card({ project, index, shouldReduceMotion, aspectClass }: {
         transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: index * 0.08 },
       }
 
+  const coverSrc = covers[project.id] ?? project.cover
+
   return (
     <motion.div className="group" {...motionProps}>
       <Link href={project.href} className="block">
         <div className={`relative overflow-hidden rounded-sm ${aspectClass} bg-muted`}>
-          {project.cover ? (
+          {coverSrc ? (
             <Parallax intensity={40}>
               <Image
-                src={project.cover}
+                src={coverSrc}
                 alt={project.name}
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
@@ -71,7 +74,7 @@ function Card({ project, index, shouldReduceMotion, aspectClass }: {
   )
 }
 
-export function SelectedWork() {
+export function SelectedWork({ covers = {} }: { covers?: Record<string, string> }) {
   const shouldReduceMotion = useReducedMotion()
 
   return (
@@ -93,27 +96,27 @@ export function SelectedWork() {
         {/* Row 1 — landscape hero + portrait offset */}
         <div className="grid grid-cols-12 gap-5 mb-5 md:mb-10">
           <div className="col-span-12 md:col-span-7">
-            <Card project={PROJECTS[0]} index={0} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[4/3]" />
+            <Card project={PROJECTS[0]} index={0} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[4/3]" covers={covers} />
           </div>
           <div className="col-span-12 md:col-span-5 md:mt-16">
-            <Card project={PROJECTS[1]} index={1} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[3/4]" />
+            <Card project={PROJECTS[1]} index={1} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[3/4]" covers={covers} />
           </div>
         </div>
 
         {/* Row 2 — square + wide landscape */}
         <div className="grid grid-cols-12 gap-5 mb-5 md:mb-10">
           <div className="col-span-12 md:col-span-5 md:-mt-16">
-            <Card project={PROJECTS[2]} index={2} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-square" />
+            <Card project={PROJECTS[2]} index={2} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-square" covers={covers} />
           </div>
           <div className="col-span-12 md:col-span-7">
-            <Card project={PROJECTS[3]} index={3} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[16/10]" />
+            <Card project={PROJECTS[3]} index={3} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[16/10]" covers={covers} />
           </div>
         </div>
 
         {/* Row 3 — centered panoramic close */}
         <div className="grid grid-cols-12 gap-5">
           <div className="col-span-12 md:col-span-8 md:col-start-3">
-            <Card project={PROJECTS[4]} index={4} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[2/1]" />
+            <Card project={PROJECTS[4]} index={4} shouldReduceMotion={shouldReduceMotion} aspectClass="aspect-[2/1]" covers={covers} />
           </div>
         </div>
       </div>
