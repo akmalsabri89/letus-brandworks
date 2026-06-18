@@ -1,7 +1,13 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
+import { presentationTool } from 'sanity/presentation'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './src/sanity/schemas'
+
+const previewOrigin =
+  process.env.NODE_ENV === 'production'
+    ? 'https://letusbrandworks.com'
+    : 'http://localhost:3000'
 
 export default defineConfig({
   name: 'letus-brandworks',
@@ -9,6 +15,12 @@ export default defineConfig({
   projectId: 'ca47tnzo',
   dataset: 'production',
   plugins: [
+    presentationTool({
+      previewUrl: {
+        origin: previewOrigin,
+        draftMode: { enable: '/api/draft-mode/enable' },
+      },
+    }),
     structureTool({
       structure: (S) =>
         S.list()

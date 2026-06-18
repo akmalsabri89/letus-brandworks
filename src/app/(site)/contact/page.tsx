@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Mail, MessageCircle } from 'lucide-react'
 import { CTAForm } from '@/components/sections/CTAForm'
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/live'
 import { siteSettingsQuery } from '@/sanity/lib/queries'
 
 export const metadata: Metadata = {
@@ -16,7 +16,8 @@ interface SiteSettings {
 }
 
 export default async function ContactPage() {
-  const settings: SiteSettings = await client.fetch(siteSettingsQuery) ?? {}
+  const { data } = await sanityFetch({ query: siteSettingsQuery })
+  const settings: SiteSettings = data ?? {}
 
   const email = settings.email ?? 'hello@letusbrandworks.com'
   const whatsappUrl = settings.whatsapp?.number

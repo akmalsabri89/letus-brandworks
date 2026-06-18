@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Unbounded, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google'
 import { StructuredData } from '@/components/StructuredData'
 import { MetaPixel } from '@/components/MetaPixel'
+import { SanityLive } from '@/sanity/lib/live'
 import './globals.css'
 
 const unbounded = Unbounded({
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StructuredData />
         <MetaPixel />
         {children}
+        <SanityLive />
       </body>
     </html>
   )

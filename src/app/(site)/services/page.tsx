@@ -2,11 +2,9 @@ import type { Metadata } from 'next'
 import { SectionNumber } from '@/components/SectionNumber'
 import { ProcessScroll } from '@/components/sections/ProcessScroll'
 import { ServicesAccordion } from '@/components/sections/ServicesAccordion'
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/live'
 import { servicesQuery } from '@/sanity/lib/queries'
 import type { SanityService } from '@/components/sections/HomeServices'
-
-export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Services',
@@ -14,7 +12,8 @@ export const metadata: Metadata = {
 }
 
 export default async function ServicesPage() {
-  const services = await client.fetch<SanityService[]>(servicesQuery)
+  const { data } = await sanityFetch({ query: servicesQuery })
+  const services = data as SanityService[]
 
   return (
     <>

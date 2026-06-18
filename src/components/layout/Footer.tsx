@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { FooterTicker } from '@/components/FooterTicker'
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/live'
 import { siteSettingsQuery } from '@/sanity/lib/queries'
 
 interface Social { platform: string; url: string }
@@ -21,7 +21,8 @@ const FOOTER_LINKS = [
 ]
 
 export async function Footer() {
-  const settings: SiteSettings = await client.fetch(siteSettingsQuery) ?? {}
+  const { data } = await sanityFetch({ query: siteSettingsQuery })
+  const settings: SiteSettings = data ?? {}
 
   const email = settings.email ?? 'hello@letusbrandworks.com'
   const socials = settings.socials ?? []
