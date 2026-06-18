@@ -39,6 +39,10 @@ export default defineConfig({
         origin: previewOrigin,
         draftMode: { enable: '/api/draft-mode/enable' },
       },
+      allowOrigins: [
+        'https://letusbrandworks.com',
+        'https://www.letusbrandworks.com',
+      ],
       resolve: {
         locations: {
           service: defineLocations({
