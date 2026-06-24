@@ -88,7 +88,7 @@ export function Testimonials({ testimonials }: { testimonials: SanityTestimonial
         {/* Quote area — pause on hover */}
         <div
           className="relative"
-          style={{ minHeight: 'clamp(12rem, 30vw, 22rem)' }}
+          style={{ minHeight: 'clamp(9rem, 18vw, 14rem)' }}
           onMouseEnter={() => {
             elapsedRef.current = Date.now() - startTimeRef.current
             setPaused(true)
@@ -106,7 +106,7 @@ export function Testimonials({ testimonials }: { testimonials: SanityTestimonial
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-              <blockquote className="display-lg">
+              <blockquote className="quote-lg max-w-[28ch]">
                 <span aria-hidden className="accent-orange">&ldquo;</span>
                 {hasEmphasis ? (
                   <>

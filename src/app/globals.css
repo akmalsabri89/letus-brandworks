@@ -108,6 +108,15 @@
     letter-spacing: -0.03em;
   }
 
+  /* Editorial quote — body font, reads as prose not headline */
+  .quote-lg {
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
   /* Mono overline */
   .overline {
     font-family: var(--font-mono), monospace;
