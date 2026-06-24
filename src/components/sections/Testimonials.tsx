@@ -106,7 +106,7 @@ export function Testimonials({ testimonials }: { testimonials: SanityTestimonial
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-              <blockquote className="quote-lg max-w-[28ch]">
+              <blockquote className="quote-lg">
                 <span aria-hidden className="accent-orange">&ldquo;</span>
                 {hasEmphasis ? (
                   <>
