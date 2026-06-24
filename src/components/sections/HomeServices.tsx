@@ -29,8 +29,8 @@ export function HomeServices({ services }: { services: SanityService[] }) {
             [ What we do ]
           </p>
           <h2 className="display-lg col-span-12 md:col-span-9">
-            Strategy first. Identity second.{' '}
-            <em className="italic accent-orange">Everything else flows from there.</em>
+            Strategy-led identity.{' '}
+            <em className="italic accent-orange">Everything else flows.</em>
           </h2>
         </div>
 
