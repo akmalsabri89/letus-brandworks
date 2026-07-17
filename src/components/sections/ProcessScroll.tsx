@@ -44,7 +44,7 @@ export function ProcessScroll() {
     <section
       ref={sectionRef}
       id="home-process"
-      className="relative overflow-hidden bg-[#141414] text-[#faf9f6]"
+      className="relative overflow-x-clip bg-[#141414] text-[#faf9f6]"
     >
       <SectionNumber n={4} className="!text-[#faf9f6]/[0.06]" />
 
