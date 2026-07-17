@@ -85,7 +85,7 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
 
             return (
               <AnimatedSection>
-                <figure className={`my-10 w-[80%] mx-auto ${layout === 'contained' ? 'max-w-[720px]' : ''}`}>
+                <figure className={`my-10 w-full mx-auto md:w-[80%] ${layout === 'contained' ? 'max-w-[720px]' : ''}`}>
                   <Image
                     src={src}
                     alt={value.caption || ''}
@@ -114,7 +114,7 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
 
             return (
               <AnimatedSection>
-                <div className="my-10 w-[80%] mx-auto">
+                <div className="my-10 w-full mx-auto md:w-[80%]">
                   <div className={gridClass}>
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {value.images.map((item: any) => {
@@ -155,7 +155,7 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             if (fileUrl) {
               return (
                 <AnimatedSection>
-                  <figure className="w-[80%] mx-auto my-10">
+                  <figure className="w-full mx-auto md:w-[80%] my-10">
                     <video
                       src={fileUrl}
                       autoPlay
@@ -177,7 +177,7 @@ export function PortableTextRenderer({ content }: { content: any[] }) {
             if (embedUrl) {
               return (
                 <AnimatedSection>
-                  <div className="w-[80%] mx-auto">
+                  <div className="w-full mx-auto md:w-[80%]">
                     <VideoEmbed url={embedUrl} />
                   </div>
                 </AnimatedSection>
