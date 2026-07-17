@@ -44,8 +44,7 @@ export function ProcessScroll() {
     <section
       ref={sectionRef}
       id="home-process"
-      className="relative bg-[#141414] text-[#faf9f6]"
-      style={{ minHeight: `${100 + STEPS.length * 70}vh` }}
+      className="relative overflow-hidden bg-[#141414] text-[#faf9f6]"
     >
       <SectionNumber n={4} className="!text-[#faf9f6]/[0.06]" />
 
@@ -53,7 +52,7 @@ export function ProcessScroll() {
 
         {/* Sticky left */}
         <div className="col-span-12 md:col-span-5">
-          <div className="sticky top-32 py-24">
+          <div className="py-16 md:sticky md:top-32 md:py-24">
             <p className="overline text-[#faf9f6]/60">[ Our Process ]</p>
             <h2 className="display-lg mt-6">
               Four moves.<br />
@@ -76,7 +75,7 @@ export function ProcessScroll() {
 
         {/* Scrolling right column */}
         <div className="col-span-12 md:col-span-7">
-          <div className="flex flex-col gap-24 py-24 md:gap-48 md:py-32">
+          <div className="flex flex-col gap-14 pb-16 md:gap-48 md:py-32">
             {STEPS.map((step) => (
               <ProcessCard key={step.num} step={step} />
             ))}
