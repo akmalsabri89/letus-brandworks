@@ -198,16 +198,19 @@ export default function NoFluffBrandAuditPage() {
               </div>
             </div>
 
-            <div className="relative flex min-h-[420px] items-center justify-center pb-4 lg:min-h-[72vh] lg:pb-0">
-              <div className="w-full max-w-[820px] overflow-hidden rounded-sm border border-black/15 bg-[#f05a28] p-5 shadow-[0_32px_100px_rgba(28,16,8,0.28)] md:p-8">
+            <div id="preview" className="relative flex min-h-[420px] items-center justify-center pb-4 lg:min-h-[72vh] lg:pb-0">
+              <div className="w-full max-w-[900px] overflow-hidden rounded-sm border border-black/15 bg-[#f05a28] p-4 shadow-[0_32px_100px_rgba(28,16,8,0.28)] md:p-6">
                 <Image
-                  src="/products/no-fluff-brand-audit/audit-cover.webp"
-                  alt="The No-Fluff Brand Audit workbook cover"
-                  width={1754}
-                  height={1241}
+                  src="/products/no-fluff-brand-audit/protected-preview.webp"
+                  alt="The No-Fluff Brand Audit cover layered over two intentionally obscured inside pages"
+                  width={1800}
+                  height={1320}
                   preload
                   className="h-auto w-full rounded-sm shadow-[0_24px_70px_rgba(28,16,8,0.20)]"
                 />
+                <p className="px-1 pb-1 pt-4 text-xs font-medium leading-relaxed text-white/78 md:text-sm">
+                  Cover shown clearly. Working pages intentionally obscured.
+                </p>
               </div>
             </div>
           </div>
@@ -411,32 +414,6 @@ export default function NoFluffBrandAuditPage() {
                     </div>
                   </article>
                 ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="preview" className="border-b border-black/10 px-5 py-20 md:px-10 md:py-32">
-          <div className="mx-auto grid max-w-[1500px] gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
-            <div className="overflow-hidden rounded-sm border border-black/12 bg-white p-3 shadow-[0_24px_70px_rgba(45,29,16,0.08)]">
-              <Image
-                src="/products/no-fluff-brand-audit/protected-preview.webp"
-                alt="Controlled preview showing the cover and two obscured inside pages"
-                width={1800}
-                height={1320}
-                className="h-auto w-full"
-              />
-            </div>
-            <div className="max-w-xl">
-              <h2 className="display-md">A controlled look inside.</h2>
-              <p className="mt-6 text-lg leading-relaxed text-black/62">
-                The sample shows the cover and two partial inside pages, enough to judge the structure and design quality before purchase.
-              </p>
-              <p className="mt-5 text-base leading-relaxed text-black/56">
-                The full prompts, scoring criteria, priority matrix, and reusable bonus canvases arrive after checkout.
-              </p>
-              <div className="mt-8 border-l-2 border-[#f05a28] pl-5 text-sm font-medium leading-relaxed text-black/72">
-                Three page surfaces shown. Two working pages intentionally obscured.
               </div>
             </div>
           </div>
